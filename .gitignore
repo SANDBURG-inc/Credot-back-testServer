@@ -150,3 +150,18 @@ dist
 
 # 보안 관련
 package-lock.json
+
+# .bash
+.bash_aliases
+.bash_history
+.bash_logout
+.bashrc
+.profile
+
+# etc
+.config
+.viminfo
+.sudo_as_admin_successful
+.pki
+.ssh
+.pm2
