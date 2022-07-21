@@ -4,12 +4,14 @@ const url = require("url");
 
 var puppeteer = require("puppeteer");
 (async () => {
-  global.browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    //args: ["--no-sandbox"]
-    //headless: false,
-  });
-  global.page = await browser.newPage();
+  global.browser = await puppeteer
+    .launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      //args: ["--no-sandbox"]
+      //headless: false,
+    })
+    .then(console.log("pupp open"));
+  global.page = await browser.newPage().then(console.log("pupp open"));
 })();
 
 router.get("/", function (req, res, next) {
