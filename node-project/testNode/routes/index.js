@@ -5,9 +5,9 @@ const url = require("url");
 var puppeteer = require("puppeteer");
 (async () => {
   global.browser = await puppeteer.launch({
-    // args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
     //args: ["--no-sandbox"]
-    headless: false,
+    //headless: false,
   });
   global.page = await browser.newPage();
 })();
