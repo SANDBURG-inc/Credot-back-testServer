@@ -16,14 +16,16 @@ var puppeteer = require("puppeteer");
 
 router.get("/", function (req, res, next) {
   //res.render('index', { title: 'Cre dot Api server'});
-  res.header("Access-Control-Allow-Origin", "https://credotdev.imweb.me");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   res.send("OK");
 });
 
 /* coupan wing */
 router.get("/coupang", function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://credotdev.imweb.me");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   var queryData = url.parse(req.url, true).query;
 
@@ -156,7 +158,8 @@ router.get("/coupang", function (req, res, next) {
 
 /* coupan wing code*/
 router.get("/coupangcode", function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://credotdev.imweb.me");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   var queryData = url.parse(req.url, true).query;
   console.log(queryData);
@@ -228,7 +231,7 @@ router.get("/coupangcode", function (req, res, next) {
 
       //브라우저 꺼라
       console.log("ok");
-      res.json({ price: data });
+      res.json({ price: calculation });
     })();
   } else {
     res.send("type code [' /?code=??? ']");
