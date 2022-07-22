@@ -16,14 +16,14 @@ var puppeteer = require("puppeteer");
 
 router.get("/", function (req, res, next) {
   //res.render('index', { title: 'Cre dot Api server'});
-  res.header("Access-Control-Allow-Origin", "https://credotdev.imweb.me");
+  res.header("Access-Control-Allow-Origin", "*"); // 모든 도메인
 
   res.send("OK");
 });
 
 /* coupan wing */
 router.get("/coupang", function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://credotdev.imweb.me");
+  res.header("Access-Control-Allow-Origin", "*"); // 모든 도메인
 
   var queryData = url.parse(req.url, true).query;
 
