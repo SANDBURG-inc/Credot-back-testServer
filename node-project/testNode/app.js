@@ -9,6 +9,9 @@ var usersRouter = require("./routes/users");
 
 var app = express();
 
+const mariadb = require("./database/mariadb.js");
+mariadb.connect;
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
