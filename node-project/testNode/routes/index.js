@@ -1,7 +1,20 @@
 var express = require("express");
 var router = express.Router();
 const url = require("url");
-const mariadb = require("./../database/mariadb.js");
+var mariadb = require("mysql");
+
+const con = mariadb.createConnection({
+  host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
+  port: 3306,
+  user: "admin",
+  password: "sandburg123",
+  database: "credotClient",
+});
+
+con.connect(function (err) {
+  if (err) throw err;
+  console.log("You are connected");
+});
 
 var puppeteer = require("puppeteer");
 (async () => {
@@ -23,12 +36,55 @@ router.get("/", function (req, res, next) {
   res.send("OK");
 });
 
-router.get("/credotSignin", function (req, res, next) {
+router.get("/Signin", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
 
   let response = url.parse(req.url, true).query;
+
+  const user = {
+    name: response.name,
+    id: response.id,
+    pw: response.pw,
+    phoneNum: response.phoneNum,
+    bank: response.bank,
+    account: response.account,
+  };
+  var sql =
+    "INSERT INTO client(name, id, pw, phoneNum, bank, account) VALUES (?,?,?,?,?,?)";
+  console.log(user["name"]);
+  var params = [
+    user["name"],
+    user["id"],
+    user["pw"],
+    user["phoneNum"],
+    user["bank"],
+    user["account"],
+  ];
+  console.log(params);
+  console.log(user["name"]);
+  con.query(sql, params, function (err, result) {
+    if (err) {
+      throw err;
+    }
+    console.log("Number of records inserted:" + result.affectedRows);
+  });
+
   res.send("credotSign");
+});
+
+router.get("/login", function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  let response = url.parse(req.url, true).query;
+  var id = response.id;
+  var pw = response.pw;
+
+  var sql = "SELECT * FROM client WHERE id = " + id + " and pw = " + pw;
+  con.query(sql, function (err, result, fields) {
+    res.send(result);
+  });
 });
 
 /* coupan wing */
