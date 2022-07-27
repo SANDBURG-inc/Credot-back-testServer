@@ -61,13 +61,10 @@ router.get("/Signin", function (req, res, next) {
     user["bank"],
     user["account"],
   ];
-  console.log(params);
-  console.log(user["name"]);
   con.query(sql, params, function (err, result) {
     if (err) {
       throw err;
     }
-    console.log("Number of records inserted:" + result.affectedRows);
   });
 
   res.send("credotSign");
@@ -81,9 +78,17 @@ router.get("/login", function (req, res, next) {
   var id = response.id;
   var pw = response.pw;
 
-  var sql = "SELECT * FROM client WHERE id = " + id + " and pw = " + pw;
+  var sql =
+    "SELECT * FROM client WHERE id = '" + id + "' and pw = '" + pw + "';";
   con.query(sql, function (err, result, fields) {
-    res.send(result);
+    if (result.length !== 0) {
+      console.log("로그인성공");
+      res.send("로그인성공");
+    } else {
+      console.log("로그인실패");
+      res.send("로그인실패");
+    }
+    return;
   });
 });
 
