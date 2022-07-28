@@ -13,7 +13,7 @@ const con = mariadb.createConnection({
 
 con.connect(function (err) {
   if (err) throw err;
-  console.log("You are connected");
+  console.log("You are connected to DB");
 });
 
 var puppeteer = require("puppeteer");
@@ -36,7 +36,7 @@ router.get("/", function (req, res, next) {
   res.send("OK");
 });
 
-router.get("/Signin", function (req, res, next) {
+router.get("/register", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
 
@@ -92,7 +92,6 @@ router.get("/login", function (req, res, next) {
   });
 });
 
-/* coupan wing */
 router.get("/coupang", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
