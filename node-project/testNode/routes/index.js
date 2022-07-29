@@ -22,7 +22,7 @@ var puppeteer = require("puppeteer");
     .launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       //args: ["--no-sandbox"]
-      //headless: false,
+      headless: false,
     })
     .then(console.log("pupp open"));
   global.page = await browser.newPage().then(console.log("pupp open"));
@@ -142,7 +142,7 @@ router.get("/coupang", function (req, res, next) {
           return false;
         }
       });
-      console.log(idpwError);
+      console.log("idpwError:" + idpwError);
 
       if (idpwError) {
         //아이디비번에 오류있을때
@@ -163,14 +163,16 @@ router.get("/coupang", function (req, res, next) {
           }
         });
 
-        console.log(dashError);
+        console.log("dashError:" + dashError);
 
         if (dashError) {
           //아이디비번이 정상이지만 접속로그때문에 대시보드로 바로 진입할때
           await page.goto(
             "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
           ); //정산현황페이지로 이동
+
           await page.waitForTimeout(2000); //로드되는 시간을 기다려준다
+          console.log("dad");
 
           const calculation = await page.evaluate(async () => {
             //정산현황에 대한 분기처리
@@ -180,14 +182,12 @@ router.get("/coupang", function (req, res, next) {
 
             if (calculateExist !== null) {
               //정산현황이 존재할 때
-              await page.waitForSelector(
-                "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
-              );
-              const data = await page.$eval(
-                "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
-                (element) => element.textContent
-              );
-              return data;
+
+              // const data = await page.$eval(
+              //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
+              //   (element) => element.textContent
+              // );
+              return calculateExist.textContent;
             } else {
               //정산현황이 존재하지 않을 때
               return 100;
@@ -275,11 +275,11 @@ router.get("/coupangcode", function (req, res, next) {
             await page.waitForSelector(
               "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
             );
-            const data = await page.$eval(
-              "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
-              (element) => element.textContent
-            );
-            return data;
+            // const data = await page.$eval(
+            //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
+            //   (element) => element.textContent
+            // );
+            return calculateExist.textContent;
           } else {
             //정산현황이 존재하지 않을 때
             return 100;
