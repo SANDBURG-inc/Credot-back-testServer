@@ -171,7 +171,7 @@ router.get("/coupang", function (req, res, next) {
             "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
           ); //정산현황페이지로 이동
 
-          await page.waitForTimeout(2000); //로드되는 시간을 기다려준다
+          await page.waitForTimeout(1000); //로드되는 시간을 기다려준다
           console.log("dad");
 
           const calculation = await page.evaluate(async () => {
@@ -279,7 +279,7 @@ router.get("/coupangcode", function (req, res, next) {
             //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
             //   (element) => element.textContent
             // );
-            return calculateExist.textContent;
+            return calculation.textContent;
           } else {
             //정산현황이 존재하지 않을 때
             return 100;
