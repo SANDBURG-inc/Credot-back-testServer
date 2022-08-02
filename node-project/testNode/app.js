@@ -6,6 +6,11 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var coupangRouter1 = require("./routes/coupang/Crawl");
+var coupangRouter2 = require("./routes/coupang/Auth");
+var dbRouter1 = require("./routes/database/dbconnect");
+var dbRouter2 = require("./routes/database/login");
+var dbRouter3 = require("./routes/database/register");
 
 var app = express();
 
@@ -28,6 +33,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/coupang", coupangRouter1, coupangRouter2);
+app.use("/database", dbRouter1, dbRouter2, dbRouter3);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
