@@ -10,9 +10,17 @@ var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
 var dbRouter1 = require("./routes/database/login");
 var dbRouter2 = require("./routes/database/register");
-const cors = require('cors');
 
 var app = express();
+
+const cors = require('cors');
+
+const corsOptions = {
+  origin: "http://credot.kr",
+  credentials: true
+}
+
+app.use(cors(corsOptions));
 
 const mariadb = require("./database/mariadb.js");
 mariadb.connect;
@@ -25,7 +33,7 @@ app.set("port", process.env.PORT || 9000);
 
 app.use(logger("dev"));
 
-app.use(cors());
+
 
 //app.get();
 app.use(express.json());
