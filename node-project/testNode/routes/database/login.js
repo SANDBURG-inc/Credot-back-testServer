@@ -5,6 +5,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
+const cors = require('cors');
 
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
@@ -68,6 +69,7 @@ passport.use(
 );
 database.get(
   "/login",
+  database.use(cors()),
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login/fail",
