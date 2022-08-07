@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var http = require('http');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -10,6 +11,7 @@ var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
 var dbRouter1 = require("./routes/database/login");
 var dbRouter2 = require("./routes/database/register");
+var dbRouter3 = require("./routes/database/contract");
 
 var app = express();
 
