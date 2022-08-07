@@ -71,7 +71,9 @@ database.get(
     failureRedirect: "/login/fail",
   }),
   function (req, res, next) {
-    console.log("dd");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    console.log(res.user);
   }
 );
 
@@ -99,12 +101,15 @@ database.get(
 
 passport.serializeUser(function (user, done) {
   done(null, user[0].id);
+  console.log(user)
 });
 
 passport.deserializeUser(function (id, done) {
   con.query("SELECT * FROM client WHERE id = ?;", id, (err, user) => {
     done(null, user);
+    console.log(user);
   });
 });
+
 
 module.exports = database;
