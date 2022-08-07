@@ -37,3 +37,5 @@ database.get("/contract",function(req,res){
         }
       });
 })
+
+module.exports=database;
