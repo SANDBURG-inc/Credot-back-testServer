@@ -45,6 +45,8 @@ passport.use(
       passReqToCallback: false,
     },
     function (id, pw, done) {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Access-Control-Allow-Credentials", "true");
       con.query("SELECT * FROM client WHERE id = ?;", id, (err, user) => {
         if (err) {
           console.log("에러");
