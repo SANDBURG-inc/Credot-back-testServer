@@ -10,6 +10,7 @@ var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
 var dbRouter1 = require("./routes/database/login");
 var dbRouter2 = require("./routes/database/register");
+const cors = require('cors');
 
 var app = express();
 
