@@ -20,6 +20,7 @@ con.connect(function (err) {
   console.log("You are connected to DB");
 });
 
+database.use(passport.initialize());
 database.use(
   session({
     secret: "seung8869@",
@@ -34,8 +35,6 @@ database.use(
     }),
   })
 );
-database.use(passport.initialize());
-database.use(passport.session());
 
 passport.use(
   new LocalStrategy(
