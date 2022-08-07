@@ -24,6 +24,8 @@ app.set("port", process.env.PORT || 9000);
 
 app.use(logger("dev"));
 
+app.use(cors());
+
 //app.get();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
