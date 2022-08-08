@@ -21,7 +21,7 @@ var dbRouter3 = require("./routes/database/contract");
 var app = express();
 
 const cors = require('cors');
-app.use(cors({origin: "http://credot.kr", credentials:true}));
+app.use(cors({origin: "http://localhost:3000", credentials:true}));
 
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
@@ -80,7 +80,7 @@ passport.deserializeUser(function(id, done) {
     })    
 });
 
-app.post('/login', function(req, res, next) {
+app.get('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     
@@ -124,11 +124,6 @@ passport.use(new LocalStrategy({
     })
   }
 ));
-
-app.get('/home', function (req, res, next) {
-  res.send(req.user.id);
-});
-
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
