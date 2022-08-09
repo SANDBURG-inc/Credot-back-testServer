@@ -146,6 +146,22 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
+app.get('/logout', async (req, res) => {
+  await req.logout();
+  res.clearCookie("connect.sid", {path:"/",httpOnly:true})
+  return res.redirect('/')
+})
+
+function isLogin(req,res,next){
+  if(req.user){
+    console.log('ddd');
+    next()
+  }
+  else{
+    res.send('로그인도안돼있는데 로그아웃?');
+  }
+}
+
 var server = app.listen(app.get("port"), () => {
   console.log("Express server listening in port " + server.address().port);
 });
