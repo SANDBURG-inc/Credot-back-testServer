@@ -17,6 +17,7 @@ var coupangRouter2 = require("./routes/coupang/Auth");
 //var dbRouter1 = require("./routes/database/login");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
+var dbRouter4 = require("./routes/database/changepw");
 
 var app = express();
 
@@ -138,7 +139,7 @@ app.get('/logout',isLogin, async (req, res) => {
 function isLogin(req,res,next){
   if(req.user){
     console.log('ddd');
-    next()
+    next();
   }
   else{
     res.send('로그인도안돼있는데 로그아웃?');
@@ -148,7 +149,7 @@ function isLogin(req,res,next){
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/coupang", coupangRouter1, coupangRouter2);
-app.use("/database", dbRouter2,dbRouter3);
+app.use("/database", dbRouter2,dbRouter3,dbRouter4);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

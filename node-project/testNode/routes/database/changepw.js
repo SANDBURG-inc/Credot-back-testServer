@@ -14,23 +14,24 @@ const con = mariadb.createConnection({
     if (err) throw err;
   });
 
-database.get("/contract",function(req,res){
+  database.get("/changepw",function(req,res){
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     let response = url.parse(req.url, true).query;
+
     const user = {
-        html: response.html,
-        sign: response.sign,
-        id: response.id
+        currentid: response.currentid,
+        currentpw: response.currentpw,
+        futurepw: response.futurepw,
       };
 
       var sql =
-      "UPDATE client SET html=? , sign=? WHERE id=?;";
+      "UPDATE client SET pw=? WHERE pw=? AND id=?;";
 
       var params = [
-        user["html"],
-        user["sign"],
-        user["id"]
+        user["futurepw"],
+        user["currentpw"],
+        user["currentid"]
       ];
 
       con.query(sql, params, function (err, result) {
@@ -40,6 +41,9 @@ database.get("/contract",function(req,res){
       });
 
       res.send('update ok')
-})
 
-module.exports=database;
+  })
+
+
+
+  module.exports=database;
