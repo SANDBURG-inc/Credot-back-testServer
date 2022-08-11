@@ -18,30 +18,52 @@ const con = mariadb.createConnection({
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     let response = url.parse(req.url, true).query;
-
+    let compareBool = false;
     const user = {
         currentid: response.currentid,
         currentpw: response.currentpw,
         futurepw: response.futurepw,
       };
 
-      var sql =
+      var compareSQL =
+      "SELECT * FROM client WHERE id=? AND pw=?;";
+
+      var updateSQL =
       "UPDATE client SET pw=? WHERE pw=? AND id=?;";
 
-      var params = [
+      var compareParams = [
+        user["currentid"],
+        user["currentpw"]
+      ];
+
+      var updateParams = [
         user["futurepw"],
         user["currentpw"],
         user["currentid"]
       ];
 
-      con.query(sql, params, function (err, result) {
+      con.query(compareSQL, compareParams, function (err, result) {
         if (err) {
           throw err;
         }
+        console.log(result)
+        
+        compareBool=Boolean(Object.keys(result).length)
+        
+        switch(compareBool){
+          case true:
+            con.query(updateSQL, updateParams, function (err, result) {
+                 if (err) {
+                   throw err;
+                 }
+                 res.send('비밀번호 변경완료')
+               });
+               break;
+          case false:
+            res.send('비밀번호가 다릅니다!')
+            break;
+        }
       });
-
-      res.send('update ok')
-
   })
 
 
