@@ -127,6 +127,8 @@ passport.use(new LocalStrategy({
 ));
 
 app.get('/logout',isLogin, async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   await req.logOut(()=>{
     res.clearCookie('connect.sid');
     res.redirect('/');
