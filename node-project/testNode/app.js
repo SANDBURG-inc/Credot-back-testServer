@@ -17,6 +17,7 @@ var coupangRouter2 = require("./routes/coupang/Auth");
 //var dbRouter1 = require("./routes/database/login");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
+var dbRouter4 = require("./routes/database/changepw");
 
 var app = express();
 
@@ -44,9 +45,9 @@ app.set("port", process.env.PORT || 9000);
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser('keyboard cat'));
+app.use(cookieParser('seung8869@'));
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'seung8869@',
   resave: false,
   saveUninitialized: true,
   cookie:{maxAge:30000, 
@@ -125,10 +126,32 @@ passport.use(new LocalStrategy({
   }
 ));
 
+app.get('/logout',isLogin, async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  await req.logOut(()=>{
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+
+  console.log(req.user);
+  
+})
+
+function isLogin(req,res,next){
+  if(req.user){
+    console.log('ddd');
+    next();
+  }
+  else{
+    res.send('로그인도안돼있는데 로그아웃?');
+  }
+}
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/coupang", coupangRouter1, coupangRouter2);
-app.use("/database", dbRouter2,dbRouter3);
+app.use("/database", dbRouter2,dbRouter3,dbRouter4);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -145,22 +168,6 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render("error");
 });
-
-app.get('/logout', async (req, res) => {
-  await req.logout();
-  res.clearCookie("connect.sid", {path:"/",httpOnly:true})
-  return res.redirect('/')
-})
-
-function isLogin(req,res,next){
-  if(req.user){
-    console.log('ddd');
-    next()
-  }
-  else{
-    res.send('로그인도안돼있는데 로그아웃?');
-  }
-}
 
 var server = app.listen(app.get("port"), () => {
   console.log("Express server listening in port " + server.address().port);
