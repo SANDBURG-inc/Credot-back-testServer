@@ -36,7 +36,7 @@ database.get("/checkEmail",function(req,res){
         }
 
         compareBool=Boolean(Object.keys(result).length)
-        return (compareBool ? res.send('중복되는 이메일이있습니다.') : res.send('사용가능한 이메일입니다.'))
+        return (compareBool ? res.send('중복되는 이메일이 있습니다.') : res.send('사용가능한 이메일입니다.'))
       });
 })
 
