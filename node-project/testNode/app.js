@@ -18,6 +18,8 @@ var coupangRouter2 = require("./routes/coupang/Auth");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
 var dbRouter4 = require("./routes/database/changepw");
+var dbRouter5 = require("./routes/database/checkEmail");
+
 
 var app = express();
 
@@ -151,7 +153,7 @@ function isLogin(req,res,next){
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/coupang", coupangRouter1, coupangRouter2);
-app.use("/database", dbRouter2,dbRouter3,dbRouter4);
+app.use("/database", dbRouter2,dbRouter3,dbRouter4,dbRouter5);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

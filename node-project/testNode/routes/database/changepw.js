@@ -19,6 +19,7 @@ const con = mariadb.createConnection({
     res.setHeader("Access-Control-Allow-Credentials", "true");
     let response = url.parse(req.url, true).query;
     let compareBool = false;
+    
     const user = {
         currentid: response.currentid,
         currentpw: response.currentpw,
