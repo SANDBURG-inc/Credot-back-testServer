@@ -81,13 +81,18 @@ coupang.get("/crawl", function (req, res, next) {
           ); //정산현황페이지로 이동
 
           await page.waitForTimeout(1000); //로드되는 시간을 기다려준다
-          console.log("dad");
 
-          const calculation = await page.evaluate(async () => {
+          const data = await page.evaluate(async () => {
             //정산현황에 대한 분기처리
             const calculateExist = document.querySelector(
               "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
             );
+            const expectedDate = document.querySelector(
+              'strong[id="expectedPayDate"]'
+            );
+
+            const arr = [calculateExist.textContent,expectedDate.textContent];
+            const errorArr = [0];
 
             if (calculateExist !== null) {
               //정산현황이 존재할 때
@@ -96,18 +101,17 @@ coupang.get("/crawl", function (req, res, next) {
               //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
               //   (element) => element.textContent
               // );
-              return calculateExist.textContent;
+              return arr;
             } else {
               //정산현황이 존재하지 않을 때
-              return 100;
+              return errorArr;
             }
           });
-          console.log(calculation);
 
           //브라우저 꺼라
 
           console.log("ok");
-          res.json({ price: calculation });
+          res.json({ price: data[1] });
           return;
         } else {
           // 인증번호 받기로 넘어갈때
