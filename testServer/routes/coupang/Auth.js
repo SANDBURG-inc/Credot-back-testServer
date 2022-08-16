@@ -48,7 +48,7 @@ coupang.get("/auth", function (req, res, next) {
             'strong[id="expectedPayDate"]'
           );
 
-          const arr = [calculateExist.textContent,expectedDate.textContent];
+          const arr = [calculation.textContent, expectedDate.textContent];
           const errorArr = [0];
 
           if (calculation !== null) {
@@ -56,7 +56,6 @@ coupang.get("/auth", function (req, res, next) {
             await page.waitForSelector(
               "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
             );
-
 
             // const data = await page.$eval(
             //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
