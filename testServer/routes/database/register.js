@@ -17,6 +17,7 @@ con.connect(function (err) {
 database.get("/register", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
+  let compareBool = false;
 
   let response = url.parse(req.url, true).query;
 
@@ -42,10 +43,10 @@ database.get("/register", function (req, res, next) {
   con.query(sql, params, function (err, result) {
     if (err) {
       throw err;
+      return res.send(false);
     }
+    return res.send(true);
   });
-
-  res.send("credotSign");
 });
 
 module.exports = database;
