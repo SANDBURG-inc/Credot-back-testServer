@@ -19,12 +19,13 @@ var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
 var dbRouter4 = require("./routes/database/changepw");
 var dbRouter5 = require("./routes/database/checkEmail");
-
+var exports = module.exports = {};
 
 var app = express();
 
 const cors = require('cors');
 app.use(cors({origin: "http://localhost:3000", credentials:true}));
+
 
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",

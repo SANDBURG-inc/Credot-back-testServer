@@ -44,20 +44,28 @@ coupang.get("/auth", function (req, res, next) {
           const calculation = document.querySelector(
             "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
           );
+          const expectedDate = document.querySelector(
+            'strong[id="expectedPayDate"]'
+          );
+
+          const arr = [calculateExist.textContent,expectedDate.textContent];
+          const errorArr = [0];
 
           if (calculation !== null) {
             //정산현황이 존재할 때
             await page.waitForSelector(
               "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
             );
+
+
             // const data = await page.$eval(
             //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
             //   (element) => element.textContent
             // );
-            return calculation.textContent;
+            return arr;
           } else {
             //정산현황이 존재하지 않을 때
-            return 100;
+            return errorArr;
           }
         });
       }
