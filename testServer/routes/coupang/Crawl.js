@@ -7,7 +7,7 @@ coupang.get("/crawl", function (req, res, next) {
 
   var queryData = url.parse(req.url, true).query;
 
-  if (queryData.id && queryData.pw) {
+  if (queryData.id && queryData.pw) { 
     (async () => {
       // const browser = await puppeteer.launch({
       //   //args: ["--no-sandbox", "--disable-setuid-sandbox"]
@@ -43,13 +43,8 @@ coupang.get("/crawl", function (req, res, next) {
       //먼저 idpw 분기처리
       await page.waitForTimeout(2000);
       const idpwError = await page.evaluate(() => {
-        //아이디비번 오류처리를 idpwError에 boolean 값으로 저장
-        if (document.querySelector('span[id="input-error"]') !== null) {
-          return true; //아이디비번오류
-        } //아이디비번 정상일때
-        else {
-          return false;
-        }
+        var inputError=(document.querySelector('span[id="input-error"]') !== null)
+        return inputError ? true : false
       });
       console.log("idpwError:" + idpwError);
 
@@ -58,8 +53,9 @@ coupang.get("/crawl", function (req, res, next) {
         res.send("idpwError");
       } else {
         //아이디비번이 정상일때
-
+        await page.waitForTimeout(1000); //로드되는 시간을 기다려준다
         const dashError = await page.evaluate(async () => {
+          
           //대시보드가 바로 접속되느냐 인증번호를 받느냐
           if (
             document.querySelector('button[id="top-header-hamburger"]') !== null
@@ -80,19 +76,13 @@ coupang.get("/crawl", function (req, res, next) {
             "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
           ); //정산현황페이지로 이동
 
-          await page.waitForTimeout(1000); //로드되는 시간을 기다려준다
+          await page.waitForTimeout(2000); //로드되는 시간을 기다려준다
 
           const data = await page.evaluate(async () => {
             //정산현황에 대한 분기처리
             const calculateExist = document.querySelector(
               "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
             );
-            const expectedDate = document.querySelector(
-              'strong[id="expectedPayDate"]'
-            );
-
-            const arr = [calculateExist.textContent,expectedDate.textContent];
-            const errorArr = [0];
 
             if (calculateExist !== null) {
               //정산현황이 존재할 때
@@ -101,9 +91,16 @@ coupang.get("/crawl", function (req, res, next) {
               //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
               //   (element) => element.textContent
               // );
+
+              const expectedDate = document.querySelector(
+                'strong[id="expectedPayDate"]'
+              );
+  
+              const arr = [calculateExist.textContent,expectedDate.textContent];
               return arr;
             } else {
               //정산현황이 존재하지 않을 때
+              const errorArr = [0];
               return errorArr;
             }
           });
@@ -111,7 +108,7 @@ coupang.get("/crawl", function (req, res, next) {
           //브라우저 꺼라
 
           console.log("ok");
-          res.json({ price: data[1] });
+          res.json({ price: data[0] });
           return;
         } else {
           // 인증번호 받기로 넘어갈때

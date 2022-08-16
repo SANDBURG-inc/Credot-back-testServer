@@ -39,31 +39,34 @@ coupang.get("/auth", function (req, res, next) {
         return;
       } else {
         //인증번호가 정상이라면
-        const calculateExist = await page.evaluate(async () => {
+        await page.goto(
+          "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
+        ); //정산현황페이지로 이동
+        await page.waitForTimeout(2000); //로드되는 시간을 기다려준다
+        
+        const data = await page.evaluate(async () => {
           //정산현황에 대한 분기처리
-          const calculation = document.querySelector(
+          const calculateExist = document.querySelector(
             "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
           );
-          const expectedDate = document.querySelector(
-            'strong[id="expectedPayDate"]'
-          );
 
-          const arr = [calculation.textContent, expectedDate.textContent];
-          const errorArr = [0];
-
-          if (calculation !== null) {
+          if (calculateExist !== null) {
             //정산현황이 존재할 때
-            await page.waitForSelector(
-              "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
-            );
 
             // const data = await page.$eval(
             //   "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a",
             //   (element) => element.textContent
             // );
+
+            const expectedDate = document.querySelector(
+              'strong[id="expectedPayDate"]'
+            );
+
+            const arr = [calculateExist.textContent,expectedDate.textContent];
             return arr;
           } else {
             //정산현황이 존재하지 않을 때
+            const errorArr = [0];
             return errorArr;
           }
         });
