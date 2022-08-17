@@ -33,7 +33,7 @@ database.get("/checkEmail", function (req, res) {
     }
 
     compareBool = Boolean(Object.keys(result).length);
-    return compareBool;
+    return res.send(compareBool);
   });
 });
 
