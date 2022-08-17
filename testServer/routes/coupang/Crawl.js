@@ -4,19 +4,17 @@ const url = require("url");
 coupang.get("/crawl", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  var idpwError = false
-  var dashError = false
-  var calculateExist = false
+  var idpwError = false;
+  var dashError = false;
+  var calculateExist = false;
 
   var queryData = url.parse(req.url, true).query;
-  
-  (async()=>{
-    
-  if (queryData.id && queryData.pw) { 
-    
+
+  (async () => {
+    if (queryData.id && queryData.pw) {
       const coupang_id = queryData.id;
       const coupang_pw = queryData.pw;
-      
+
       //쿠팡wing 로그인 페이지
       await page.goto("https://wing.coupang.com/login");
       console.log(coupang_id);
@@ -38,25 +36,28 @@ coupang.get("/crawl", function (req, res, next) {
 
       //idpw 분기처리
       await page.waitForTimeout(3000);
-      idpwError = await page.evaluate(() => { //idpw에러 판단
-        var check=(document.querySelector('span[id="input-error"]') !== null)
-        return check //오류:정상
+      idpwError = await page.evaluate(() => {
+        //idpw에러 판단
+        var check = document.querySelector('span[id="input-error"]') !== null;
+        return check; //오류:정상
       });
       console.log("idpwError:" + idpwError);
-    
-  }
+    }
 
-  if(!idpwError){ //idpw분기처리
-        
-      dashError = await page.evaluate(async () => { //대시보드 에러 판단
-      return (document.querySelector('button[id="top-header-hamburger"]') !== null) 
+    if (!idpwError) {
+      //idpw분기처리
+
+      dashError = await page.evaluate(async () => {
+        //대시보드 에러 판단
+        return (
+          document.querySelector('button[id="top-header-hamburger"]') !== null
+        );
       });
-    
-      console.log("dashError:" + dashError);
-  }
 
-  if(dashError){
-      
+      console.log("dashError:" + dashError);
+    }
+
+    if (dashError) {
       //아이디비번이 정상이지만 접속로그때문에 대시보드로 바로 진입할때
       await page.goto(
         "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
@@ -64,30 +65,39 @@ coupang.get("/crawl", function (req, res, next) {
 
       await page.waitForTimeout(2000); //로드되는 시간을 기다려준다
 
-      calculateExist = await page.evaluate(async()=>{ //정산현황 여부 판단
-        return (document.querySelector("#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a")!==null)
-      })
-  }
-      
-  if(calculateExist){
-    await page.waitForTimeout(2000);
-    let data = await page.evaluate(async()=>{
-      const calculation = document.querySelector('#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a')
-      const expectedDate = document.querySelector('strong[id="expectedPayDate"]');
-      return [calculation.textContent,expectedDate.textContent]
-    })
-      console.log("ok");
-        res.json({ price: data[0] , deadline: data[1] });
-        return;
-  }
-      
-      await page.waitForSelector('input[name="mfaType"]');
-      await page.click('input[name="mfaType"]');
+      calculateExist = await page.evaluate(async () => {
+        //정산현황 여부 판단
+        return (
+          document.querySelector(
+            "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
+          ) !== null
+        );
+      });
+    }
 
-      //인증 버튼 기다리기
-      await page.waitForSelector("#auth-mfa-code");
-     res.send("auth");
-  })()
+    if (calculateExist) {
+      await page.waitForTimeout(2000);
+      let data = await page.evaluate(async () => {
+        const calculation = document.querySelector(
+          "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
+        );
+        const expectedDate = document.querySelector(
+          'strong[id="expectedPayDate"]'
+        );
+        return [calculation.textContent, expectedDate.textContent];
+      });
+      console.log("ok");
+      res.json({ price: data[0], deadline: data[1] });
+      return;
+    }
+
+    await page.waitForSelector('input[name="mfaType"]');
+    await page.click('input[name="mfaType"]');
+
+    //인증 버튼 기다리기
+    await page.waitForSelector("#auth-mfa-code");
+    res.send("auth");
+  })();
 });
 
 module.exports = coupang;
