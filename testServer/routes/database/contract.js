@@ -29,7 +29,7 @@ database.get("/contract", function (req, res) {
   };
 
   var sql =
-    "INSERT INTO client(id, sign, date, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO contract(id, sign, date, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
 
   var params = [
     user["id"],
