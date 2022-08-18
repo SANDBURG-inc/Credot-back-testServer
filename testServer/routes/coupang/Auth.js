@@ -5,7 +5,7 @@ coupang.get("/auth", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   (async () => {
-    let authError = true;
+    let authError = false;
     let calculateExist = false;
 
     var queryData = url.parse(req.url, true).query;
@@ -22,11 +22,11 @@ coupang.get("/auth", function (req, res, next) {
       //인증번호 분기처리
       await page.waitForTimeout(2000);
       authError = await page.evaluate(() => {
-        return document.querySelector('span[id="input-error"]') !== null; //오류 : 정상
+        return document.querySelector('span[id="input-error"]') == null;
       });
     }
 
-    if (!authError) {
+    if (authError) {
       //인증번호가 정상이라면
       await page.goto(
         "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
@@ -59,9 +59,19 @@ coupang.get("/auth", function (req, res, next) {
       return;
     }
 
-    await page.waitForSelector("#wing-top-main-side-menu");
-    console.log("ok");
-    res.send("authError");
+    switch (true) {
+      case authError:
+      case !calculateExist:
+        res.send("103");
+        break;
+      case !authError:
+        res.send("104");
+        break;
+      default:
+        //await page.waitForSelector("#wing-top-main-side-menu");
+        console.log("ok");
+        break;
+    }
   })();
 });
 
