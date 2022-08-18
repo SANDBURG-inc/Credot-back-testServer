@@ -28,10 +28,15 @@ database.get("/register", function (req, res, next) {
     phoneNum: response.phoneNum,
     bank: response.bank,
     account: response.account,
+    corporateName: response.corporateName,
+    ceo: response.ceo,
+    businessLoc: response.businessLoc,
+    corporateNum: response.corporateNum,
   };
   var sql =
-    "INSERT INTO client(name, id, pw, phoneNum, bank, account) VALUES (?,?,?,?,?,?)";
+    "INSERT INTO client(name, id, pw, phoneNum, bank, account, corporateName, ceo, businessLoc, corporateNum) VALUES (?,?,?,?,?,?,?,?,?,?)";
   console.log(user["name"]);
+
   var params = [
     user["name"],
     user["id"],
@@ -39,6 +44,10 @@ database.get("/register", function (req, res, next) {
     user["phoneNum"],
     user["bank"],
     user["account"],
+    user["corporateName"],
+    user["ceo"],
+    user["businessLoc"],
+    user["corporateNum"],
   ];
   con.query(sql, params, function (err, result) {
     if (err) {
