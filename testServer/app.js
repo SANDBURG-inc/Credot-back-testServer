@@ -98,12 +98,12 @@ app.get("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
-        return res.send(json);
+        return res.send(true);
       });
     } else {
       // 로그인 실패
       console.log("/login fail!!!");
-      res.send([]);
+      res.send(false);
     }
   })(req, res, next);
 });
