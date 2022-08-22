@@ -100,8 +100,10 @@ coupang.get("/crawl", function (req, res, next) {
         res.send("102");
         break;
       default:
-        await page.waitForSelector('input[name="mfaType"]');
-        await page.click('input[name="mfaType"]');
+        await page.waitForSelector("#btnEmail");
+        await page.click("#btnEmail");
+        // await page.waitForSelector('input[name="mfaType"]');
+        // await page.click('input[name="mfaType"]');
         //인증 버튼 기다리기
         await page.waitForSelector("#auth-mfa-code");
         res.send("auth");
