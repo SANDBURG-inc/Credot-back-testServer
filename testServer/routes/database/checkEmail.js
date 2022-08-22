@@ -20,12 +20,12 @@ database.get("/checkEmail", function (req, res) {
   let response = url.parse(req.url, true).query;
   let compareBool = false;
   const user = {
-    id: response.id,
+    email: response.email,
   };
 
-  var sql = "SELECT * FROM client WHERE id=?;";
+  var sql = "SELECT * FROM client WHERE email=?;";
 
-  var params = [user["id"]];
+  var params = [user["email"]];
 
   con.query(sql, params, function (err, result) {
     if (err) {
@@ -33,7 +33,7 @@ database.get("/checkEmail", function (req, res) {
     }
 
     compareBool = Boolean(Object.keys(result).length);
-    return res.send(compareBool);
+    return compareBool;
   });
 });
 

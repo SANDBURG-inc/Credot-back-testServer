@@ -4,29 +4,29 @@ const url = require("url");
 coupang.get("/crawl", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  var idpwError = false;
+  var emailpwError = false;
   var dashError = false;
   var calculateExist = false;
 
   var queryData = url.parse(req.url, true).query;
 
   (async () => {
-    if (queryData.id && queryData.pw) {
-      const coupang_id = queryData.id;
+    if (queryData.email && queryData.pw) {
+      const coupang_email = queryData.email;
       const coupang_pw = queryData.pw;
 
       //쿠팡wing 로그인 페이지
       await page.goto("https://wing.coupang.com/login");
-      console.log(coupang_id);
+      console.log(coupang_email);
       console.log(coupang_pw);
 
       //아이디랑 비밀번호 란에 값을 넣기
       await page.evaluate(
-        (id, pw) => {
-          document.querySelector('input[name="username"]').value = id;
+        (email, pw) => {
+          document.querySelector('input[name="username"]').value = email;
           document.querySelector('input[name="password"]').value = pw;
         },
-        coupang_id,
+        coupang_email,
         coupang_pw
       );
 
@@ -34,18 +34,18 @@ coupang.get("/crawl", function (req, res, next) {
       await page.click('input[name="login"]');
       console.log("loginClicked");
 
-      //idpw 분기처리
+      //emailpw 분기처리
       await page.waitForTimeout(3000);
-      idpwError = await page.evaluate(() => {
-        //idpw에러 판단
+      emailpwError = await page.evaluate(() => {
+        //emailpw에러 판단
         var check = document.querySelector('span[id="input-error"]') !== null;
         return check; //오류:정상
       });
-      console.log("idpwError:" + idpwError);
+      console.log("emailpwError:" + emailpwError);
     }
 
-    if (!idpwError) {
-      //idpw분기처리
+    if (!emailpwError) {
+      //emailpw분기처리
 
       dashError = await page.evaluate(async () => {
         //대시보드 에러 판단
@@ -92,7 +92,7 @@ coupang.get("/crawl", function (req, res, next) {
     }
 
     switch (true) {
-      case idpwError:
+      case emailpwError:
         res.send("101");
         break;
       case dashError:
@@ -100,11 +100,13 @@ coupang.get("/crawl", function (req, res, next) {
         res.send("102");
         break;
       default:
-        await page.waitForSelector('input[name="mfaType"]');
-        await page.click('input[name="mfaType"]');
+        await page.waitForSelector("#btnEmail");
+        await page.click("#btnEmail");
+        // await page.waitForSelector('input[name="mfaType"]');
+        // await page.click('input[name="mfaType"]');
         //인증 버튼 기다리기
         await page.waitForSelector("#auth-mfa-code");
-        res.send("auth");
+        res.send("200");
         break;
     }
   })();
