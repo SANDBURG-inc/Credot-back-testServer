@@ -19,7 +19,7 @@ database.get("/contract", function (req, res) {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   let response = url.parse(req.url, true).query;
   const user = {
-    id: response.id,
+    email: response.email,
     sign: response.sign,
     date: response.date,
     deadline: response.deadline,
@@ -29,10 +29,10 @@ database.get("/contract", function (req, res) {
   };
 
   var sql =
-    "INSERT INTO contract(id, sign, date, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO contract(email, sign, date, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
 
   var params = [
-    user["id"],
+    user["email"],
     user["sign"],
     user["date"],
     user["deadline"],

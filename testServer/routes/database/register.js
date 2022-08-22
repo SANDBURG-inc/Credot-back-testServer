@@ -23,7 +23,7 @@ database.get("/register", function (req, res, next) {
 
   const user = {
     name: response.name,
-    id: response.id,
+    email: response.email,
     pw: response.pw,
     phoneNum: response.phoneNum,
     bank: response.bank,
@@ -34,12 +34,12 @@ database.get("/register", function (req, res, next) {
     corporateNum: response.corporateNum,
   };
   var sql =
-    "INSERT INTO client(name, id, pw, phoneNum, bank, account, corporateName, ceo, businessLoc, corporateNum) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO client(name, email, pw, phoneNum, bank, account, corporateName, ceo, businessLoc, corporateNum) VALUES (?,?,?,?,?,?,?,?,?,?)";
   console.log(user["name"]);
 
   var params = [
     user["name"],
-    user["id"],
+    user["email"],
     user["pw"],
     user["phoneNum"],
     user["bank"],

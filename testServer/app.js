@@ -65,14 +65,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 passport.serializeUser(function (user, done) {
   console.log("serializeUser ", user);
-  done(null, user.id);
+  done(null, user.email);
 });
 
-passport.deserializeUser(function (id, done) {
-  console.log("deserializeUser id ", id);
+passport.deserializeUser(function (email, done) {
+  console.log("deserializeUser email ", email);
   var userinfo;
-  var sql = "SELECT * FROM client WHERE id=?";
-  con.query(sql, [id], function (err, result) {
+  var sql = "SELECT * FROM client WHERE email=?";
+  con.query(sql, [email], function (err, result) {
     if (err) console.log("mysql 에러");
 
     console.log("deserializeUser mysql result : ", result);
@@ -111,14 +111,14 @@ app.get("/login", function (req, res, next) {
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "id",
+      usernameField: "email",
       passwordField: "pw",
     },
     function (username, password, done) {
-      var sql = "SELECT * FROM client WHERE id=? AND pw=?";
+      var sql = "SELECT * FROM client WHERE email=? AND pw=?";
       con.query(sql, [username, password], function (err, result) {
         if (err) console.log("mysql 에러");
-        // 입력받은 ID와 비밀번호에 일치하는 회원정보가 없는 경우
+        // 입력받은 email과 비밀번호에 일치하는 회원정보가 없는 경우
         if (result.length === 0) {
           console.log("결과 없음");
           return done(null, false, { message: "Incorrect" });
