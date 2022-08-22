@@ -15,6 +15,7 @@ var usersRouter = require("./routes/users");
 var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
 //var dbRouter1 = require("./routes/database/login");
+var dbRouter1 = require("./routes/database/sorting");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
 var dbRouter4 = require("./routes/database/changepw");
@@ -158,7 +159,7 @@ function isLogin(req, res, next) {
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/coupang", coupangRouter1, coupangRouter2);
-app.use("/database", dbRouter2, dbRouter3, dbRouter4, dbRouter5);
+app.use("/database", dbRouter1, dbRouter2, dbRouter3, dbRouter4, dbRouter5);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

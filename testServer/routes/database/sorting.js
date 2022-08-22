@@ -14,26 +14,23 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-database.get("/checkEmail", function (req, res) {
+database.get("/sorting", function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
-
   let response = url.parse(req.url, true).query;
-  let compareBool = false;
+
   const user = {
     email: response.email,
   };
-
-  var sql = "SELECT * FROM client WHERE email=?;";
-
+  var sql = "SELECT * FROM contract WHERE email=?;";
   var params = [user["email"]];
 
   con.query(sql, params, function (err, result) {
     if (err) {
       throw err;
     }
-    compareBool = Boolean(Object.keys(result).length);
-    return res.send(compareBool);
+    console.log(result);
+    return res.send(result);
   });
 });
 
