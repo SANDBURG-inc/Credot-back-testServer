@@ -4,29 +4,29 @@ const url = require("url");
 coupang.get("/crawl", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  var emailpwError = false;
+  var idpwError = false;
   var dashError = false;
   var calculateExist = false;
 
   var queryData = url.parse(req.url, true).query;
 
   (async () => {
-    if (queryData.email && queryData.pw) {
-      const coupang_email = queryData.email;
+    if (queryData.id && queryData.pw) {
+      const coupang_id = queryData.id;
       const coupang_pw = queryData.pw;
 
       //쿠팡wing 로그인 페이지
       await page.goto("https://wing.coupang.com/login");
-      console.log(coupang_email);
+      console.log(coupang_id);
       console.log(coupang_pw);
 
       //아이디랑 비밀번호 란에 값을 넣기
       await page.evaluate(
-        (email, pw) => {
-          document.querySelector('input[name="username"]').value = email;
+        (id, pw) => {
+          document.querySelector('input[name="username"]').value = id;
           document.querySelector('input[name="password"]').value = pw;
         },
-        coupang_email,
+        coupang_id,
         coupang_pw
       );
 
@@ -34,18 +34,18 @@ coupang.get("/crawl", function (req, res, next) {
       await page.click('input[name="login"]');
       console.log("loginClicked");
 
-      //emailpw 분기처리
+      //idpw 분기처리
       await page.waitForTimeout(3000);
-      emailpwError = await page.evaluate(() => {
-        //emailpw에러 판단
+      idpwError = await page.evaluate(() => {
+        //idpw에러 판단
         var check = document.querySelector('span[id="input-error"]') !== null;
         return check; //오류:정상
       });
-      console.log("emailpwError:" + emailpwError);
+      console.log("idpwError:" + idpwError);
     }
 
-    if (!emailpwError) {
-      //emailpw분기처리
+    if (!idpwError) {
+      //idpw분기처리
 
       dashError = await page.evaluate(async () => {
         //대시보드 에러 판단
@@ -92,7 +92,7 @@ coupang.get("/crawl", function (req, res, next) {
     }
 
     switch (true) {
-      case emailpwError:
+      case idpwError:
         res.send("101");
         break;
       case dashError:
