@@ -5,7 +5,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
-const cors = require('cors');
+const cors = require("cors");
 
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
@@ -39,15 +39,15 @@ database.use(
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "id",
+      usernameField: "email",
       passwordField: "pw",
       session: true,
       passReqToCallback: false,
     },
-    function (id, pw, done) {
+    function (email, pw, done) {
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.setHeader("Access-Control-Allow-Credentials", "true");
-      con.query("SELECT * FROM client WHERE id = ?;", id, (err, user) => {
+      con.query("SELECT * FROM client WHERE email = ?;", email, (err, user) => {
         if (err) {
           console.log("에러");
           return done(err);
@@ -85,11 +85,11 @@ database.get(
 //   res.setHeader("Access-Control-Allow-Credentials", "true");
 
 //   let response = url.parse(req.url, true).query;
-//   var id = response.id;
+//   var email = response.email;
 //   var pw = response.pw;
 
 //   var sql =
-//     "SELECT * FROM client WHERE id = '" + id + "' and pw = '" + pw + "';";
+//     "SELECT * FROM client WHERE email = '" + email + "' and pw = '" + pw + "';";
 //   con.query(sql, function (err, result, fields) {
 //     if (result.length !== 0) {
 //       console.log("로그인성공");
@@ -103,16 +103,15 @@ database.get(
 // });
 
 passport.serializeUser(function (user, done) {
-  done(null, user[0].id);
-  console.log(user)
+  done(null, user[0].email);
+  console.log(user);
 });
 
-passport.deserializeUser(function (id, done) {
-  con.query("SELECT * FROM client WHERE id = ?;", id, (err, user) => {
+passport.deserializeUser(function (email, done) {
+  con.query("SELECT * FROM client WHERE email = ?;", email, (err, user) => {
     done(null, user);
     console.log(user);
   });
 });
-
 
 module.exports = database;

@@ -8,8 +8,6 @@ coupang.get("/crawl", function (req, res, next) {
   var dashError = false;
   var calculateExist = false;
 
-  var arr = [idpwError, dashError, calculateExist];
-
   var queryData = url.parse(req.url, true).query;
 
   (async () => {
@@ -92,24 +90,23 @@ coupang.get("/crawl", function (req, res, next) {
       res.json({ price: data[0], deadline: data[1] });
       return;
     }
-    var arr = [idpwError, dashError, calculateExist];
-    console.log(arr[0]);
-    console.log(arr[1]);
-    console.log(arr[2]);
 
-    switch (arr) {
-      case arr[0]:
+    switch (true) {
+      case idpwError:
         res.send("101");
         break;
-      case arr[1]:
+      case dashError:
+      case !calculateExist:
         res.send("102");
         break;
       default:
-        await page.waitForSelector('input[name="mfaType"]');
-        await page.click('input[name="mfaType"]');
+        await page.waitForSelector("#btnEmail");
+        await page.click("#btnEmail");
+        // await page.waitForSelector('input[name="mfaType"]');
+        // await page.click('input[name="mfaType"]');
         //인증 버튼 기다리기
         await page.waitForSelector("#auth-mfa-code");
-        res.send("auth");
+        res.send("200");
         break;
     }
   })();

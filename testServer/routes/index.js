@@ -7,7 +7,7 @@ var puppeteer = require("puppeteer");
     .launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       //args: ["--no-sandbox"]
-      headless: false,
+      //headless: false,
     })
     .then(console.log("pupp open"));
   global.page = await browser.newPage().then(console.log("pupp open"));

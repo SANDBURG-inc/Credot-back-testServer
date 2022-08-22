@@ -15,6 +15,7 @@ var usersRouter = require("./routes/users");
 var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
 //var dbRouter1 = require("./routes/database/login");
+var dbRouter1 = require("./routes/database/sorting");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
 var dbRouter4 = require("./routes/database/changepw");
@@ -65,14 +66,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 passport.serializeUser(function (user, done) {
   console.log("serializeUser ", user);
-  done(null, user.id);
+  done(null, user.email);
 });
 
-passport.deserializeUser(function (id, done) {
-  console.log("deserializeUser id ", id);
+passport.deserializeUser(function (email, done) {
+  console.log("deserializeUser email ", email);
   var userinfo;
-  var sql = "SELECT * FROM client WHERE id=?";
-  con.query(sql, [id], function (err, result) {
+  var sql = "SELECT * FROM client WHERE email=?";
+  con.query(sql, [email], function (err, result) {
     if (err) console.log("mysql 에러");
 
     console.log("deserializeUser mysql result : ", result);
@@ -111,14 +112,14 @@ app.get("/login", function (req, res, next) {
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "id",
+      usernameField: "email",
       passwordField: "pw",
     },
     function (username, password, done) {
-      var sql = "SELECT * FROM client WHERE id=? AND pw=?";
+      var sql = "SELECT * FROM client WHERE email=? AND pw=?";
       con.query(sql, [username, password], function (err, result) {
         if (err) console.log("mysql 에러");
-        // 입력받은 ID와 비밀번호에 일치하는 회원정보가 없는 경우
+        // 입력받은 email과 비밀번호에 일치하는 회원정보가 없는 경우
         if (result.length === 0) {
           console.log("결과 없음");
           return done(null, false, { message: "Incorrect" });
@@ -158,7 +159,7 @@ function isLogin(req, res, next) {
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/coupang", coupangRouter1, coupangRouter2);
-app.use("/database", dbRouter2, dbRouter3, dbRouter4, dbRouter5);
+app.use("/database", dbRouter1, dbRouter2, dbRouter3, dbRouter4, dbRouter5);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
