@@ -22,14 +22,14 @@ database.get("/sorting", function (req, res) {
   const user = {
     email: response.email,
   };
-  var sql = "SELECT * FROM contract WHERE email=?;";
+  var sql =
+    "SELECT contractDate,deadline,ammount,commerce,status FROM contract WHERE email=?;";
   var params = [user["email"]];
 
   con.query(sql, params, function (err, result) {
     if (err) {
       throw err;
     }
-    console.log(result);
     return res.send(result);
   });
 });
