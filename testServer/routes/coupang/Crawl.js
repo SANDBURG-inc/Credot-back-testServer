@@ -14,12 +14,9 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-coupang.get("/get", function (req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  let response = url.parse(req.url, true).query;
+function get(req, res) {
   const user = {
-    email: response.email,
+    email: req.user.email,
   };
   var sql =
     "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
@@ -29,14 +26,16 @@ coupang.get("/get", function (req, res) {
     if (err) {
       throw err;
     }
-    console.log(Object.keys(result).length);
+    if (Object.keys(result).length == 0) {
+      return res.send(0);
+    }
     var sum = 0;
     for (var i = 0; i < Object.keys(result).length; i++) {
       sum += parseInt(result[i].ammount);
     }
     return res.send(sum);
   });
-});
+}
 
 coupang.get("/crawl", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -128,7 +127,9 @@ coupang.get("/crawl", function (req, res, next) {
       let endDate = new Date(data[1]);
       let btMs = endDate.getTime() - stDate.getTime();
       var btDay = parseInt(btMs / (1000 * 60 * 60 * 24));
-      let fee = parseFloat(data[0].replace(/,/g, "")) * (0.0004 * btDay);
+      let fee = parseInt(
+        parseFloat(data[0].replace(/,/g, "")) * (0.0004 * btDay)
+      );
       console.log("ok");
       res.json({
         price: data[0],
