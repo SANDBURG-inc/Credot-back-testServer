@@ -84,6 +84,8 @@ passport.deserializeUser(function (email, done) {
 });
 
 app.get("/login", function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   passport.authenticate("local", function (err, user, info) {
     if (err) {
       return next(err);
