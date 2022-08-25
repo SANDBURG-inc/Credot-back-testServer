@@ -23,7 +23,7 @@ database.get("/contract", function (req, res) {
     sign: response.sign,
     contractDate: response.contractDate,
     deadline: response.deadline,
-    ammount: response.ammount,
+    ammount: parseFloat(response.ammount.replace(/,/g, "")),
     commerce: response.commerce,
     status: response.status,
   };
