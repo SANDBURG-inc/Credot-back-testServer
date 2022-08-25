@@ -14,7 +14,7 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-database.get("/sorting", function (req, res) {
+database.get("/extractContract", function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   let response = url.parse(req.url, true).query;
