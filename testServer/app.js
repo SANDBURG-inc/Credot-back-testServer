@@ -26,8 +26,12 @@ var exports = (module.exports = {});
 var app = express();
 
 const cors = require("cors");
-app.use(cors({ origin: "http://credot.kr", credentials: true }));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+const corsOptions = {
+  origin: "http://credot.kr",
+  origin: "http://localhost:3000",
+};
+
+app.use(cors(corsOptions));
 
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
