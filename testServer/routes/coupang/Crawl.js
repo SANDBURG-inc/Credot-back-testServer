@@ -1,9 +1,46 @@
 var coupang = require("express").Router();
 const url = require("url");
+var mariadb = require("mysql");
+
+const con = mariadb.createConnection({
+  host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
+  port: 3306,
+  user: "admin",
+  password: "sandburg123",
+  database: "credotClient",
+});
+
+con.connect(function (err) {
+  if (err) throw err;
+});
+
+function get(req, res) {
+  const user = {
+    email: req.user.email,
+  };
+  var sql =
+    "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
+  var params = [user["email"]];
+
+  con.query(sql, params, function (err, result) {
+    if (err) {
+      throw err;
+    }
+    if (Object.keys(result).length == 0) {
+      return res.send(0);
+    }
+    var sum = 0;
+    for (var i = 0; i < Object.keys(result).length; i++) {
+      sum += parseInt(result[i].ammount);
+    }
+    return res.send(sum);
+  });
+}
 
 coupang.get("/crawl", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
+  console.log(req.user);
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
@@ -86,8 +123,20 @@ coupang.get("/crawl", function (req, res, next) {
         );
         return [calculation.textContent, expectedDate.textContent];
       });
+      let stDate = new Date();
+      let endDate = new Date(data[1]);
+      let btMs = endDate.getTime() - stDate.getTime();
+      var btDay = parseInt(btMs / (1000 * 60 * 60 * 24));
+      let fee = parseInt(
+        parseFloat(data[0].replace(/,/g, "")) * (0.0004 * btDay)
+      );
       console.log("ok");
-      res.json({ price: data[0], deadline: data[1] });
+      res.json({
+        price: data[0],
+        deadline: data[1],
+        btDay: btDay,
+        fee: fee,
+      });
       return;
     }
 

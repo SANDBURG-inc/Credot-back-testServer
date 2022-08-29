@@ -21,20 +21,20 @@ database.get("/contract", function (req, res) {
   const user = {
     email: response.email,
     sign: response.sign,
-    date: response.date,
+    contractDate: response.contractDate,
     deadline: response.deadline,
-    ammount: response.ammount,
+    ammount: parseFloat(response.ammount.replace(/,/g, "")),
     commerce: response.commerce,
     status: response.status,
   };
 
   var sql =
-    "INSERT INTO contract(email, sign, date, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO contract(email, sign, contractDate, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
 
   var params = [
     user["email"],
     user["sign"],
-    user["date"],
+    user["contractDate"],
     user["deadline"],
     user["ammount"],
     user["commerce"],

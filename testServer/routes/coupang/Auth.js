@@ -54,8 +54,20 @@ coupang.get("/auth", function (req, res, next) {
         );
         return [calculation.textContent, expectedDate.textContent];
       });
+      let stDate = new Date();
+      let endDate = new Date(data[1]);
+      let btMs = endDate.getTime() - stDate.getTime();
+      var btDay = parseInt(btMs / (1000 * 60 * 60 * 24));
+      let fee = parseInt(
+        parseFloat(data[0].replace(/,/g, "")) * (0.0004 * btDay)
+      );
       console.log("ok");
-      res.json({ price: data[0], deadline: data[1] });
+      res.json({
+        price: data[0],
+        deadline: data[1],
+        btDay: btDay,
+        fee: fee,
+      });
       return;
     }
 

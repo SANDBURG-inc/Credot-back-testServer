@@ -15,7 +15,7 @@ var usersRouter = require("./routes/users");
 var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
 //var dbRouter1 = require("./routes/database/login");
-var dbRouter1 = require("./routes/database/sorting");
+var dbRouter1 = require("./routes/database/extractContract");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
 var dbRouter4 = require("./routes/database/changepw");
@@ -25,6 +25,7 @@ var exports = (module.exports = {});
 var app = express();
 
 const cors = require("cors");
+app.use(cors({ origin: "http://credot.kr", credentials: true }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 const con = mariadb.createConnection({
