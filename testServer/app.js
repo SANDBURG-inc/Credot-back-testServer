@@ -25,14 +25,17 @@ var exports = (module.exports = {});
 
 var app = express();
 
-const cors = require("cors");
+const whitelist = ["http://localhost:3000", "http://credot.kr"];
 const corsOptions = {
-  origin: "http://credot.kr",
-  origin: "http://localhost:3000",
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not Allowed"));
+    }
+  },
 };
-
 app.use(cors(corsOptions));
-
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
   port: 3306,
