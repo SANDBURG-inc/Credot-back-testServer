@@ -12,9 +12,10 @@ const mariadb = require("mysql");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+
 var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
-//var dbRouter1 = require("./routes/database/login");
+
 var dbRouter1 = require("./routes/database/extractContract");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
