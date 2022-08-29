@@ -9,6 +9,7 @@ const passport = require("passport"),
 const logger = require("morgan");
 const http = require("http");
 const mariadb = require("mysql");
+const cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -36,6 +37,7 @@ const corsOptions = {
   },
 };
 app.use(cors(corsOptions));
+
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
   port: 3306,
