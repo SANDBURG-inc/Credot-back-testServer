@@ -1,7 +1,6 @@
 var coupang = require("express").Router();
 const url = require("url");
 var mariadb = require("mysql");
-
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
   port: 3306,
@@ -16,7 +15,7 @@ con.connect(function (err) {
 
 function getContract() {
   const user = {
-    email: req.user.email,
+    email: "test@naver.com",
   };
   var sql =
     "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
@@ -33,19 +32,16 @@ function getContract() {
     for (var i = 0; i < Object.keys(result).length; i++) {
       sum += parseInt(result[i].ammount);
     }
-    return res.send(sum);
+    return sum;
   });
 }
 
 coupang.get("/crawl", function (req, res, next) {
   // res.setHeader("Access-Control-Allow-Origin", "*");
   // res.setHeader("Access-Control-Allow-Credentials", "true");
-  console.log(req.user);
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
-
-  console.log(getContract(req, res));
 
   var queryData = url.parse(req.url, true).query;
 
