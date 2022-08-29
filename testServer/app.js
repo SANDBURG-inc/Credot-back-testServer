@@ -25,8 +25,20 @@ var dbRouter5 = require("./routes/database/checkEmail");
 var exports = (module.exports = {});
 
 var app = express();
+const whitelist = ["http://localhost:3000", "http://credot.kr"];
 
-app.use(cors({ origin: "http://credot.kr", credentials: true }));
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("NOT allowed"));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
+//app.use(cors({ origin: "http://credot.kr", credentials: true }));
 
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
