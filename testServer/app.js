@@ -22,10 +22,14 @@ var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
 var dbRouter4 = require("./routes/database/changepw");
 var dbRouter5 = require("./routes/database/checkEmail");
-var exports = (module.exports = {});
 
 var app = express();
-const whitelist = ["http://localhost:3000", "http://credot.kr"];
+const whitelist = [
+  "http://localhost:3000",
+  "http://credot.kr",
+  "http://localhost:9000",
+  "http://api.credot.kr",
+];
 
 const corsOptions = {
   origin: function (origin, callback) {

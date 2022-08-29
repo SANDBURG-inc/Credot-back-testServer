@@ -26,7 +26,7 @@ function getContract() {
       throw err;
     }
     if (Object.keys(result).length == 0) {
-      return res.send(0);
+      return 0;
     }
     var sum = 0;
     for (var i = 0; i < Object.keys(result).length; i++) {
@@ -46,6 +46,7 @@ coupang.get("/crawl", function (req, res, next) {
   var queryData = url.parse(req.url, true).query;
 
   (async () => {
+    console.log(getContract());
     if (queryData.id && queryData.pw) {
       const coupang_id = queryData.id;
       const coupang_pw = queryData.pw;
@@ -123,8 +124,9 @@ coupang.get("/crawl", function (req, res, next) {
       });
       let stDate = new Date();
       let endDate = new Date(data[1]);
-      let btMs = endDate.getTime() - stDate.getTime();
-      var btDay = parseInt(btMs / (1000 * 60 * 60 * 24));
+      var btDay = parseInt(
+        (endDate.getTime() - stDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
       let fee = parseInt(
         parseFloat(data[0].replace(/,/g, "")) * (0.0004 * btDay)
       );
