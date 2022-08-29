@@ -2,8 +2,8 @@ var coupang = require("express").Router();
 const url = require("url");
 
 coupang.get("/auth", function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
   (async () => {
     let authError = false;
     let calculateExist = false;
@@ -14,7 +14,6 @@ coupang.get("/auth", function (req, res, next) {
     if (queryData.code) {
       const coupang_code = queryData.code;
       await page.evaluate((code) => {
-        console.log("ff");
         document.querySelector('input[name="code"]').value = code;
       }, coupang_code);
       //인증하기
