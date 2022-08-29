@@ -14,7 +14,7 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-function getContract(req, res) {
+function getContract() {
   const user = {
     email: req.user.email,
   };
