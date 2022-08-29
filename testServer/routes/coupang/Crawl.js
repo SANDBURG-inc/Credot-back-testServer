@@ -14,7 +14,7 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-function get(req, res) {
+function getContract(req, res) {
   const user = {
     email: req.user.email,
   };
@@ -44,6 +44,8 @@ coupang.get("/crawl", function (req, res, next) {
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
+
+  console.log(getContract(req, res));
 
   var queryData = url.parse(req.url, true).query;
 
