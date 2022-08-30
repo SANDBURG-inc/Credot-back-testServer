@@ -49,6 +49,7 @@ coupang.get("/crawl", function (req, res, next) {
   var queryData = url.parse(req.url, true).query;
 
   (async () => {
+    console.log(req.user);
     console.log(getContract(req));
     if (queryData.id && queryData.pw) {
       const coupang_id = queryData.id;
