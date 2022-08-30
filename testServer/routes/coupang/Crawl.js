@@ -13,9 +13,12 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-function getContract() {
+function getContract(req) {
+  if (req.user == undefined) {
+    return 0;
+  }
   const user = {
-    email: "test@naver.com",
+    email: req.user.email,
   };
   var sql =
     "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
@@ -46,7 +49,7 @@ coupang.get("/crawl", function (req, res, next) {
   var queryData = url.parse(req.url, true).query;
 
   (async () => {
-    console.log(getContract());
+    console.log(getContract(req));
     if (queryData.id && queryData.pw) {
       const coupang_id = queryData.id;
       const coupang_pw = queryData.pw;
@@ -132,7 +135,7 @@ coupang.get("/crawl", function (req, res, next) {
       );
       console.log("ok");
       res.json({
-        price: data[0],
+        price: data[0] - getContract(req),
         deadline: data[1],
         btDay: btDay,
         fee: fee,
