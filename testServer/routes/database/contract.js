@@ -15,8 +15,8 @@ con.connect(function (err) {
 });
 
 database.get("/contract", function (req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
   let response = url.parse(req.url, true).query;
   const user = {
     email: response.email,

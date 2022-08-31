@@ -116,7 +116,8 @@ app.get("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
-        return res.send(json);
+        // return res.send(json);
+        return res.redirect("/");
       });
     } else {
       // 로그인 실패
@@ -154,8 +155,8 @@ passport.use(
 );
 
 app.get("/logout", isLogin, async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
   await req.logOut(() => {
     res.clearCookie("connect.sid");
     res.redirect("/");
