@@ -117,8 +117,8 @@ app.post("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
-        return res.send(json);
-        // return res.redirect("/");
+        // return res.send(json);
+        return res.redirect("/");
       });
     } else {
       // 로그인 실패
