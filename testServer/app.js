@@ -73,6 +73,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 30000, secure: false, httpOnly: false },
+    name: "seunghunCookie",
   })
 );
 app.use(passport.initialize());
