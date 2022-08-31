@@ -39,6 +39,7 @@ const corsOptions = {
       callback(new Error("NOT allowed"));
     }
   },
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -116,8 +117,8 @@ app.get("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
-        // return res.send(json);
-        return res.redirect("/");
+        return res.send(json);
+        // return res.redirect("/");
       });
     } else {
       // 로그인 실패
