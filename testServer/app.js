@@ -118,7 +118,11 @@ app.post("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
-        return res.send(json);
+        return res.send(json).cookie("seunghunCookie", {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        });
       });
     } else {
       // 로그인 실패
