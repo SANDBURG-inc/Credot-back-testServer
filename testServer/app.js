@@ -72,7 +72,8 @@ app.use(
     secret: "seung8869@",
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 30000, secure: false, httpOnly: false },
+    // cookie: { maxAge: 30000, secure: false, httpOnly: false },
+    cookie: { httpOnly: true, sameSite: "none", secure: true },
     name: "seunghunCookie",
   })
 );
@@ -118,11 +119,7 @@ app.post("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
-        return res.send(json).cookie("seunghunCookie", {
-          httpOnly: true,
-          sameSite: "none",
-          secure: true,
-        });
+        return res.send(json).cookie();
       });
     } else {
       // 로그인 실패
