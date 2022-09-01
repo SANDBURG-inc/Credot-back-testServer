@@ -120,6 +120,7 @@ app.post("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
+        console.log(user);
         return res.send(json);
       });
     } else {
