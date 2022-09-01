@@ -72,9 +72,9 @@ app.use(
     secret: "seung8869@",
     resave: false,
     saveUninitialized: true,
-    // cookie: { maxAge: 30000, secure: false, httpOnly: false },
+    cookie: { maxAge: 30000, secure: false, httpOnly: false },
     // cookie: { httpOnly: true, sameSite: "none", secure: true },
-    cookie: { maxAge: 30000, sameSite: "none", secure: true, httpOnly: true },
+    //cookie: { maxAge: 30000, sameSite: "none", secure: true, httpOnly: true },
     name: "seunghunCookie",
   })
 );
