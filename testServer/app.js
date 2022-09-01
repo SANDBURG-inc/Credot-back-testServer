@@ -24,12 +24,7 @@ var dbRouter4 = require("./routes/database/changepw");
 var dbRouter5 = require("./routes/database/checkEmail");
 
 var app = express();
-const whitelist = [
-  "http://localhost:3000",
-  "http://credot.kr",
-  "http://localhost:9000",
-  "http://api.credot.kr",
-];
+const whitelist = ["http://localhost:3000", "http://credot.kr"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -75,7 +70,6 @@ app.use(
     cookie: { maxAge: 30000, secure: false, httpOnly: false },
     // cookie: { httpOnly: true, sameSite: "none", secure: true },
     //cookie: { maxAge: 30000, sameSite: "none", secure: true, httpOnly: true },
-    name: "seunghunCookie",
   })
 );
 app.use(passport.initialize());
@@ -122,8 +116,6 @@ app.post("/login", function (req, res, next) {
           return next(err);
         }
         console.log(user);
-        console.log(req.user);
-        console.log(req.session);
         return res.send(json);
       });
     } else {
