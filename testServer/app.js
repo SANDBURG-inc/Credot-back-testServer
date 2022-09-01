@@ -119,7 +119,7 @@ app.post("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
-        return res.send(json).cookie();
+        return res.send(json);
       });
     } else {
       // 로그인 실패
