@@ -31,19 +31,19 @@ const whitelist = [
   "http://api.credot.kr",
 ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("NOT allowed"));
-    }
-  },
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("NOT allowed"));
+//     }
+//   },
+//   credentials: true,
+// };
 
-app.use(cors(corsOptions));
-//app.use(cors({ origin: "http://credot.kr", credentials: true }));
+// app.use(cors(corsOptions));
+app.use(cors({ origin: "http://credot.kr", credentials: true }));
 
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
@@ -73,7 +73,8 @@ app.use(
     resave: false,
     saveUninitialized: true,
     // cookie: { maxAge: 30000, secure: false, httpOnly: false },
-    cookie: { httpOnly: true, sameSite: "none", secure: true },
+    // cookie: { httpOnly: true, sameSite: "none", secure: true },
+    cookie: { maxAge: 30000, sameSite: "none", secure: true, httpOnly: true },
     name: "seunghunCookie",
   })
 );
