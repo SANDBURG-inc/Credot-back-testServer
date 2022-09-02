@@ -24,7 +24,7 @@ var dbRouter4 = require("./routes/database/changepw");
 var dbRouter5 = require("./routes/database/checkEmail");
 
 var app = express();
-const whitelist = ["http://localhost:3000", "http://3.38.232.237:3000"];
+const whitelist = ["http://localhost:3000", "http://credot.kr"];
 
 const corsOptions = {
   origin: function (origin, callback) {
