@@ -66,9 +66,7 @@ app.use(
     secret: "seung8869@",
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 30000, secure: false, httpOnly: false },
-    // cookie: { httpOnly: true, sameSite: "none", secure: true },
-    //cookie: { maxAge: 30000, sameSite: "none", secure: true, httpOnly: true },
+    cookie: { secure: false, httpOnly: false },
   })
 );
 app.use(passport.initialize());
@@ -77,25 +75,6 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-
-passport.serializeUser(function (user, done) {
-  console.log("serializeUser ", user);
-  done(null, user.email);
-});
-
-passport.deserializeUser(function (email, done) {
-  console.log("deserializeUser email ", email);
-  var userinfo;
-  var sql = "SELECT * FROM client WHERE email=?";
-  con.query(sql, [email], function (err, result) {
-    if (err) console.log("mysql 에러");
-
-    console.log("deserializeUser mysql result : ", result);
-    var json = JSON.stringify(result[0]);
-    userinfo = JSON.parse(json);
-    done(null, userinfo);
-  });
-});
 
 app.post("/login", function (req, res, next) {
   passport.authenticate("local", function (err, user, info) {
@@ -151,25 +130,33 @@ passport.use(
   )
 );
 
-app.get("/logout", isLogin, async (req, res) => {
-  // res.setHeader("Access-Control-Allow-Origin", "*");
-  // res.setHeader("Access-Control-Allow-Credentials", "true");
-  await req.logOut(() => {
-    res.clearCookie("connect.sid");
-    res.redirect("/");
-  });
-
-  console.log(req.user);
+passport.serializeUser(function (user, done) {
+  console.log("serializeUser ", user);
+  done(null, user.email);
 });
 
-function isLogin(req, res, next) {
-  if (req.user) {
-    console.log("ddd");
-    next();
-  } else {
-    res.send("로그인도안돼있는데 로그아웃?");
-  }
-}
+passport.deserializeUser(function (email, done) {
+  console.log("deserializeUser email ", email);
+  var userinfo;
+  var sql = "SELECT * FROM client WHERE email=?";
+  con.query(sql, [email], function (err, result) {
+    if (err) console.log("mysql 에러");
+
+    console.log("deserializeUser mysql result : ", result);
+    var json = JSON.stringify(result[0]);
+    userinfo = JSON.parse(json);
+    done(null, userinfo);
+  });
+});
+
+app.get("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
