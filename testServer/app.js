@@ -9,25 +9,36 @@ const passport = require("passport"),
 const logger = require("morgan");
 const http = require("http");
 const mariadb = require("mysql");
+const cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+
 var coupangRouter1 = require("./routes/coupang/Crawl");
 var coupangRouter2 = require("./routes/coupang/Auth");
-//var dbRouter1 = require("./routes/database/login");
+
 var dbRouter1 = require("./routes/database/extractContract");
 var dbRouter2 = require("./routes/database/register");
 var dbRouter3 = require("./routes/database/contract");
 var dbRouter4 = require("./routes/database/changepw");
 var dbRouter5 = require("./routes/database/checkEmail");
-var exports = (module.exports = {});
 
 var app = express();
+const whitelist = ["http://localhost:3000", "http://credot.kr"];
 
-const cors = require("cors");
-app.use(cors({ origin: "http://credot.kr", credentials: true }));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("NOT allowed"));
+    }
+  },
+  credentials: true,
+};
 
+app.use(cors(corsOptions));
+// app.use(cors({ origin: "http://credot.kr", credentials: true }));
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
   port: 3306,
@@ -56,6 +67,8 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 30000, secure: false, httpOnly: false },
+    // cookie: { httpOnly: true, sameSite: "none", secure: true },
+    //cookie: { maxAge: 30000, sameSite: "none", secure: true, httpOnly: true },
   })
 );
 app.use(passport.initialize());
@@ -84,7 +97,7 @@ passport.deserializeUser(function (email, done) {
   });
 });
 
-app.get("/login", function (req, res, next) {
+app.post("/login", function (req, res, next) {
   passport.authenticate("local", function (err, user, info) {
     if (err) {
       return next(err);
@@ -100,6 +113,7 @@ app.get("/login", function (req, res, next) {
         if (err) {
           return next(err);
         }
+        console.log(user);
         return res.send(json);
       });
     } else {
@@ -138,8 +152,8 @@ passport.use(
 );
 
 app.get("/logout", isLogin, async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
   await req.logOut(() => {
     res.clearCookie("connect.sid");
     res.redirect("/");

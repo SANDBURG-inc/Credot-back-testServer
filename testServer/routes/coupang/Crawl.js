@@ -1,7 +1,6 @@
 var coupang = require("express").Router();
 const url = require("url");
 var mariadb = require("mysql");
-
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
   port: 3306,
@@ -14,7 +13,10 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-function get(req, res) {
+function getContract(req) {
+  if (req.user == undefined) {
+    return 0;
+  }
   const user = {
     email: req.user.email,
   };
@@ -27,20 +29,19 @@ function get(req, res) {
       throw err;
     }
     if (Object.keys(result).length == 0) {
-      return res.send(0);
+      return 0;
     }
     var sum = 0;
     for (var i = 0; i < Object.keys(result).length; i++) {
       sum += parseInt(result[i].ammount);
     }
-    return res.send(sum);
+    return sum;
   });
 }
 
 coupang.get("/crawl", function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  console.log(req.user);
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
@@ -48,6 +49,8 @@ coupang.get("/crawl", function (req, res, next) {
   var queryData = url.parse(req.url, true).query;
 
   (async () => {
+    console.log(req.user);
+    console.log(getContract(req));
     if (queryData.id && queryData.pw) {
       const coupang_id = queryData.id;
       const coupang_pw = queryData.pw;
@@ -125,14 +128,15 @@ coupang.get("/crawl", function (req, res, next) {
       });
       let stDate = new Date();
       let endDate = new Date(data[1]);
-      let btMs = endDate.getTime() - stDate.getTime();
-      var btDay = parseInt(btMs / (1000 * 60 * 60 * 24));
+      var btDay = parseInt(
+        (endDate.getTime() - stDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
       let fee = parseInt(
         parseFloat(data[0].replace(/,/g, "")) * (0.0004 * btDay)
       );
       console.log("ok");
       res.json({
-        price: data[0],
+        price: data[0] - getContract(req),
         deadline: data[1],
         btDay: btDay,
         fee: fee,
