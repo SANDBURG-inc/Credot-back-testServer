@@ -39,7 +39,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 // app.use(cors({ origin: "http://credot.kr", credentials: true }));
-
 const con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
   port: 3306,
@@ -81,7 +80,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 passport.serializeUser(function (user, done) {
   console.log("serializeUser ", user);
-  console.log(req.session);
   done(null, user.email);
 });
 
@@ -154,7 +152,6 @@ passport.use(
 );
 
 app.get("/logout", isLogin, async (req, res) => {
-  console.log(req.session);
   // res.setHeader("Access-Control-Allow-Origin", "*");
   // res.setHeader("Access-Control-Allow-Credentials", "true");
   await req.logOut(() => {
