@@ -66,7 +66,7 @@ app.use(
     secret: "seung8869@",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: false },
+    cookie: { secure: true, sameSite: "none", httpOnly: true },
   })
 );
 app.use(passport.initialize());
