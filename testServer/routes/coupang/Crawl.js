@@ -39,7 +39,7 @@ function getContract(req) {
   });
 }
 
-coupang.get("/crawl", function (req, res, next) {
+coupang.post("/crawl", function (req, res, next) {
   // res.setHeader("Access-Control-Allow-Origin", "*");
   // res.setHeader("Access-Control-Allow-Credentials", "true");
   var idpwError = false;
