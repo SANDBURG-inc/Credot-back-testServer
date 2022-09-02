@@ -11,7 +11,7 @@ const http = require("http");
 const mariadb = require("mysql");
 const cors = require("cors");
 
-var indexRouter = require("./routes/index");
+var puppRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
 var coupangRouter1 = require("./routes/coupang/Crawl");
@@ -66,7 +66,7 @@ app.use(
     secret: "seung8869@",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true, sameSite: "none", httpOnly: true },
+    cookie: { secure: false, httpOnly: false },
   })
 );
 app.use(passport.initialize());
@@ -158,7 +158,7 @@ app.get("/logout", function (req, res, next) {
   });
 });
 
-app.use("/", indexRouter);
+app.use("/pupp", puppRouter);
 app.use("/users", usersRouter);
 app.use("/coupang", coupangRouter1, coupangRouter2);
 app.use("/database", dbRouter1, dbRouter2, dbRouter3, dbRouter4, dbRouter5);
