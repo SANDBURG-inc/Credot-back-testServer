@@ -13,6 +13,8 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
+var LOG = "crawl.js: ";
+
 function getContract(req) {
   if (req.user == undefined) {
     return 0;
@@ -47,18 +49,17 @@ coupang.post("/crawl", function (req, res, next) {
   var calculateExist = false;
 
   var queryData = url.parse(req.url, true).query;
-
+  console.log(LOG + req.user);
+  console.log(LOG + getContract(req));
   (async () => {
-    console.log(req.user);
-    console.log(getContract(req));
+    console.log(LOG + req.user);
+    console.log(LOG + getContract(req));
     if (queryData.id && queryData.pw) {
       const coupang_id = queryData.id;
       const coupang_pw = queryData.pw;
 
       //쿠팡wing 로그인 페이지
       await page.goto("https://wing.coupang.com/login");
-      console.log(coupang_id);
-      console.log(coupang_pw);
 
       //아이디랑 비밀번호 란에 값을 넣기
       await page.evaluate(
@@ -72,7 +73,6 @@ coupang.post("/crawl", function (req, res, next) {
 
       //로그인
       await page.click('input[name="login"]');
-      console.log("loginClicked");
 
       //idpw 분기처리
       await page.waitForTimeout(3000);

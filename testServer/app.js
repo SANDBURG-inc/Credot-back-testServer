@@ -24,6 +24,8 @@ var dbRouter4 = require("./routes/database/changepw");
 var dbRouter5 = require("./routes/database/checkEmail");
 
 var app = express();
+
+var LOG = "app.js: ";
 const whitelist = [
   "http://localhost:3000",
   "http://credot.kr",
@@ -140,13 +142,13 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (email, done) {
-  console.log("deserializeUser email ", email);
+  console.log(LOG + "deserializeUser email ", email);
   var userinfo;
   var sql = "SELECT * FROM client WHERE email=?";
   con.query(sql, [email], function (err, result) {
     if (err) console.log("mysql 에러");
 
-    console.log("deserializeUser mysql result : ", result);
+    console.log(LOG + "deserializeUser mysql result : ", result);
     var json = JSON.stringify(result[0]);
     userinfo = JSON.parse(json);
     done(null, userinfo);
@@ -188,3 +190,4 @@ var server = app.listen(app.get("port"), () => {
 });
 
 module.exports = app;
+module.exports = passport;
