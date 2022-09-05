@@ -55,7 +55,7 @@ con.connect(function (err) {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 // set Port
-app.set("port", process.env.PORT || 9000);
+app.set("port", process.env.PORT || 80);
 
 app.use(logger("dev"));
 app.use(bodyParser.json());
