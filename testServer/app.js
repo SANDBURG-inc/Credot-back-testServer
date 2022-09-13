@@ -30,6 +30,7 @@ const whitelist = [
   "http://localhost:3000",
   "http://credot.kr",
   "http://3.38.232.237:3000",
+  "http://3.38.232.237"
 ];
 
 const corsOptions = {
@@ -72,7 +73,8 @@ app.use(
     secret: "seung8869@",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: false },
+    cookie: { secure: true, httpOnly: true, SameSite:'none',maxAge:600000,domain:'.credot.kr' },
+    rolling:true  
   })
 );
 app.use(passport.initialize());
