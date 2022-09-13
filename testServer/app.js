@@ -102,7 +102,13 @@ app.post("/login", function (req, res, next) {
     } else {
       // 로그인 실패
       console.log("/login fail!!!");
-      res.send(false);
+      res.cookie({
+        secure: true,
+        httpOnly: true,
+        SameSite: "none",
+        maxAge: 600000,
+        domain: ".credot.kr",
+      });
     }
   })(req, res, next);
 });
