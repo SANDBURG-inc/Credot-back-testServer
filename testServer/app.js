@@ -11,26 +11,16 @@ const http = require("http");
 const mariadb = require("mysql");
 const cors = require("cors");
 
-var puppRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-
-var coupangRouter1 = require("./routes/coupang/Crawl");
-var coupangRouter2 = require("./routes/coupang/Auth");
-
-var dbRouter1 = require("./routes/database/extractContract");
-var dbRouter2 = require("./routes/database/register");
-var dbRouter3 = require("./routes/database/contract");
-var dbRouter4 = require("./routes/database/changepw");
-var dbRouter5 = require("./routes/database/checkEmail");
+const commerceRouter = require("./routes/commerce/commerceController");
+const dbRouter = require("./routes/database/databaseController");
 
 var app = express();
 
-var LOG = "app.js: ";
 const whitelist = [
   "http://localhost:3000",
   "http://credot.kr",
   "http://3.38.232.237:3000",
-  "http://3.38.232.237"
+  "http://3.38.232.237",
 ];
 
 const corsOptions = {
@@ -45,8 +35,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// app.use(cors({ origin: "http://credot.kr", credentials: true }));
-const con = mariadb.createConnection({
+
+global.con = mariadb.createConnection({
   host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
   port: 3306,
   user: "admin",
@@ -73,8 +63,14 @@ app.use(
     secret: "seung8869@",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true, httpOnly: true, SameSite:'none',maxAge:600000,domain:'.credot.kr' },
-    rolling:true  
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      SameSite: "none",
+      maxAge: 600000,
+      domain: ".credot.kr",
+    },
+    rolling: true,
   })
 );
 app.use(passport.initialize());
@@ -165,11 +161,12 @@ app.get("/logout", function (req, res, next) {
     res.redirect("/");
   });
 });
+app.get("/", function (req, res, next) {
+  res.send("ok");
+});
 
-app.use("/pupp", puppRouter);
-app.use("/users", usersRouter);
-app.use("/coupang", coupangRouter1, coupangRouter2);
-app.use("/database", dbRouter1, dbRouter2, dbRouter3, dbRouter4, dbRouter5);
+app.use("/commerce", commerceRouter);
+app.use("/database", dbRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -192,4 +189,3 @@ var server = app.listen(app.get("port"), () => {
 });
 
 module.exports = app;
-module.exports = passport;

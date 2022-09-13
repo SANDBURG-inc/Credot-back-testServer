@@ -1,9 +1,7 @@
-var coupang = require("express").Router();
+var router = require("express").Router();
 const url = require("url");
 
-coupang.get("/auth", function (req, res, next) {
-  // res.setHeader("Access-Control-Allow-Origin", "*");
-  // res.setHeader("Access-Control-Allow-Credentials", "true");
+router.get("/", function (req, res, next) {
   (async () => {
     let authError = false;
     let calculateExist = false;
@@ -86,4 +84,4 @@ coupang.get("/auth", function (req, res, next) {
   })();
 });
 
-module.exports = coupang;
+module.exports = router;

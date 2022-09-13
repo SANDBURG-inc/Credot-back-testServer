@@ -1,19 +1,6 @@
-var coupang = require("express").Router();
+const router = require("express").Router();
 const url = require("url");
-var mariadb = require("mysql");
-const con = mariadb.createConnection({
-  host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
-  port: 3306,
-  user: "admin",
-  password: "sandburg123",
-  database: "credotClient",
-});
-
-con.connect(function (err) {
-  if (err) throw err;
-});
-
-var LOG = "crawl.js: ";
+const mariadb = require("mysql");
 
 function getContract(req) {
   if (req.user == undefined) {
@@ -41,19 +28,14 @@ function getContract(req) {
   });
 }
 
-coupang.post("/crawl", function (req, res, next) {
-  // res.setHeader("Access-Control-Allow-Origin", "*");
-  // res.setHeader("Access-Control-Allow-Credentials", "true");
+router.post("/", function (req, res, next) {
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
 
   var queryData = url.parse(req.url, true).query;
-  console.log(LOG + req.user);
-  console.log(LOG + getContract(req));
+
   (async () => {
-    console.log(LOG + req.user);
-    console.log(LOG + getContract(req));
     if (queryData.id && queryData.pw) {
       const coupang_id = queryData.id;
       const coupang_pw = queryData.pw;
@@ -165,4 +147,4 @@ coupang.post("/crawl", function (req, res, next) {
   })();
 });
 
-module.exports = coupang;
+module.exports = router;

@@ -1,23 +1,9 @@
-var database = require("express").Router();
+var router = require("express").Router();
 const url = require("url");
-var mariadb = require("mysql");
 
-const con = mariadb.createConnection({
-  host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
-  port: 3306,
-  user: "admin",
-  password: "sandburg123",
-  database: "credotClient",
-});
-
-con.connect(function (err) {
-  if (err) throw err;
-});
-
-database.get("/register", function (req, res, next) {
+router.get("/", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  let compareBool = false;
 
   let response = url.parse(req.url, true).query;
 
@@ -58,4 +44,4 @@ database.get("/register", function (req, res, next) {
   });
 });
 
-module.exports = database;
+module.exports = router;
