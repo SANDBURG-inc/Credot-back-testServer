@@ -97,6 +97,13 @@ app.post("/login", function (req, res, next) {
           return next(err);
         }
         console.log(user);
+        res.cookie("seunghuncookie", {
+          secure: true,
+          httpOnly: true,
+          SameSite: "none",
+          maxAge: 600000,
+          domain: ".credot.kr",
+        });
         return res.send(json);
       });
     } else {
