@@ -2,8 +2,6 @@ const router = require("express").Router();
 const url = require("url");
 
 router.get("/", function (req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   let response = url.parse(req.url, true).query;
   let compareBool = false;
 

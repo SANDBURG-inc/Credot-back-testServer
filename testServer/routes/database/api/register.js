@@ -2,9 +2,6 @@ const router = require("express").Router();
 const url = require("url");
 
 router.get("/", function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
   let response = url.parse(req.url, true).query;
 
   const user = {

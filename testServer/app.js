@@ -84,11 +84,8 @@ app.post("/login", function (req, res, next) {
     }
 
     if (user) {
-      // 로그인 성공
       console.log("req.user : " + JSON.stringify(user));
       var json = JSON.parse(JSON.stringify(user));
-
-      // customCallback 사용시 req.logIn()메서드 필수
       req.logIn(user, function (err) {
         if (err) {
           return next(err);
@@ -104,7 +101,6 @@ app.post("/login", function (req, res, next) {
         return res.send(json);
       });
     } else {
-      // 로그인 실패
       console.log("/login fail!!!");
       res.send(false);
     }
@@ -121,7 +117,6 @@ passport.use(
       var sql = "SELECT * FROM client WHERE email=? AND pw=?";
       con.query(sql, [username, password], function (err, result) {
         if (err) console.log("mysql 에러");
-        // 입력받은 email과 비밀번호에 일치하는 회원정보가 없는 경우
         if (result.length === 0) {
           console.log("결과 없음");
           return done(null, false, { message: "Incorrect" });
@@ -131,7 +126,7 @@ passport.use(
           var userinfo = JSON.parse(json);
           console.log("test");
           console.log("userinfo " + userinfo);
-          return done(null, userinfo); // result값으로 받아진 회원정보를 return해줌
+          return done(null, userinfo);
         }
       });
     }
