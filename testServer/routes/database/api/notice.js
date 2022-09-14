@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const url = require("url");
 
 router.get("/", (req, res) => {
   var sql = "SELECT title,contents,date FROM notice";
