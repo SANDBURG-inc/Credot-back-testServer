@@ -1,4 +1,4 @@
-var router = require("express").Router();
+const router = require("express").Router();
 const url = require("url");
 
 router.get("/", function (req, res, next) {

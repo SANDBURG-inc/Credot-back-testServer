@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const url = require("url");
-const mariadb = require("mysql");
 
 function getContract(req) {
   if (req.user == undefined) {

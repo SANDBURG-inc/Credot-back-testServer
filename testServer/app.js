@@ -14,7 +14,7 @@ const cors = require("cors");
 const commerceRouter = require("./routes/commerce/commerceController");
 const dbRouter = require("./routes/database/databaseController");
 
-var app = express();
+const app = express();
 
 const whitelist = [
   "http://localhost:3000",
@@ -48,10 +48,8 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-// view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-// set Port
 app.set("port", process.env.PORT || 9000);
 
 app.use(logger("dev"));
@@ -75,7 +73,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-//app.get();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -186,7 +183,6 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   res.render("error");
 });
