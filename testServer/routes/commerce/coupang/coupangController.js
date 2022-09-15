@@ -4,7 +4,7 @@ const router = express.Router();
 const crawlRouter = require("./api/Crawl.js");
 const authRouter = require("./api/Auth.js");
 
-router.get("/", function (req, res) {
+router.get("/", (req, res) => {
   res.send("coupang");
 });
 
