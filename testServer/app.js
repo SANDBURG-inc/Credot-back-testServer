@@ -24,7 +24,7 @@ const whitelist = [
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -44,7 +44,7 @@ global.con = mariadb.createConnection({
   database: "credotClient",
 });
 
-con.connect(function (err) {
+con.connect((err) => {
   if (err) throw err;
 });
 
@@ -77,8 +77,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.post("/login", function (req, res, next) {
-  passport.authenticate("local", function (err, user, info) {
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
     }
@@ -86,7 +86,7 @@ app.post("/login", function (req, res, next) {
     if (user) {
       console.log("req.user : " + JSON.stringify(user));
       var json = JSON.parse(JSON.stringify(user));
-      req.logIn(user, function (err) {
+      req.logIn(user, (err) => {
         if (err) {
           return next(err);
         }
@@ -113,9 +113,9 @@ passport.use(
       usernameField: "email",
       passwordField: "pw",
     },
-    function (username, password, done) {
+    (username, password, done) => {
       var sql = "SELECT * FROM client WHERE email=? AND pw=?";
-      con.query(sql, [username, password], function (err, result) {
+      con.query(sql, [username, password], (err, result) => {
         if (err) console.log("mysql 에러");
         if (result.length === 0) {
           console.log("결과 없음");
@@ -133,16 +133,16 @@ passport.use(
   )
 );
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
   console.log("serializeUser ", user);
   done(null, user.email);
 });
 
-passport.deserializeUser(function (email, done) {
+passport.deserializeUser((email, done) => {
   console.log(LOG + "deserializeUser email ", email);
   var userinfo;
   var sql = "SELECT * FROM client WHERE email=?";
-  con.query(sql, [email], function (err, result) {
+  con.query(sql, [email], (err, result) => {
     if (err) console.log("mysql 에러");
 
     console.log(LOG + "deserializeUser mysql result : ", result);
@@ -152,15 +152,15 @@ passport.deserializeUser(function (email, done) {
   });
 });
 
-app.get("/logout", function (req, res, next) {
-  req.logout(function (err) {
+app.get("/logout", (req, res, next) => {
+  req.logout((err) => {
     if (err) {
       return next(err);
     }
     res.redirect("/");
   });
 });
-app.get("/", function (req, res, next) {
+app.get("/", (req, res, next) => {
   res.send("ok");
 });
 

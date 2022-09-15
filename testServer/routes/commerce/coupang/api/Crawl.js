@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const url = require("url");
 
-function getContract(req) {
+const getContract = (req) => {
   if (req.user == undefined) {
     return 0;
   }
@@ -12,7 +12,7 @@ function getContract(req) {
     "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
   var params = [user["email"]];
 
-  con.query(sql, params, function (err, result) {
+  con.query(sql, params, (err, result) => {
     if (err) {
       throw err;
     }
@@ -25,9 +25,9 @@ function getContract(req) {
     }
     return sum;
   });
-}
+};
 
-router.post("/", function (req, res, next) {
+router.post("/", (req, res, next) => {
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
