@@ -3,7 +3,7 @@ const router = express.Router();
 
 const coupangRouter = require("./coupang/coupangController.js");
 
-router.get("/", function (req, res) {
+router.get("/", (req, res) => {
   res.send("commerce");
 });
 

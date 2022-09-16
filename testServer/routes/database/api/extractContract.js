@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const url = require("url");
 
-router.get("/", function (req, res) {
+router.get("/", (req, res) => {
   let response = url.parse(req.url, true).query;
 
   const user = {
@@ -11,7 +11,7 @@ router.get("/", function (req, res) {
     "SELECT contractDate,deadline,ammount,commerce,status FROM contract WHERE email=?;";
   var params = [user["email"]];
 
-  con.query(sql, params, function (err, result) {
+  con.query(sql, params, (err, result) => {
     if (err) {
       throw err;
     }

@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const url = require("url");
 
-router.get("/", function (req, res) {
+router.get("/", (req, res) => {
   let response = url.parse(req.url, true).query;
   let compareBool = false;
 
@@ -23,7 +23,7 @@ router.get("/", function (req, res) {
     user["currentemail"],
   ];
 
-  con.query(compareSQL, compareParams, function (err, result) {
+  con.query(compareSQL, compareParams, (err, result) => {
     if (err) {
       throw err;
     }
@@ -33,7 +33,7 @@ router.get("/", function (req, res) {
 
     switch (compareBool) {
       case true:
-        con.query(updateSQL, updateParams, function (err, result) {
+        con.query(updateSQL, updateParams, (err, result) => {
           if (err) {
             throw err;
           }

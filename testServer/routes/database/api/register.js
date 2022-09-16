@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const url = require("url");
 
-router.get("/", function (req, res, next) {
+router.get("/", (req, res, next) => {
   let response = url.parse(req.url, true).query;
 
   const user = {
@@ -32,7 +32,7 @@ router.get("/", function (req, res, next) {
     user["businessLoc"],
     user["corporateNum"],
   ];
-  con.query(sql, params, function (err, result) {
+  con.query(sql, params, (err, result) => {
     if (err) {
       throw err;
       return res.send(false);

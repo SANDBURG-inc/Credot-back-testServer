@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const url = require("url");
 
-router.get("/", function (req, res, next) {
+router.get("/", (req, res, next) => {
   (async () => {
     let authError = false;
     let calculateExist = false;
