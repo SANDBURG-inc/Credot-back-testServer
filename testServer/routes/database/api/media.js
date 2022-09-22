@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 router.get("/", (req, res) => {
-  var sql = "SELECT img, title,contents, date FROM media";
+  var sql = "SELECT title, img, contents, date FROM media";
   con.query(sql, (err, result) => {
     if (err) {
       throw err;
