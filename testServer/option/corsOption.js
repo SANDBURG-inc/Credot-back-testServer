@@ -1,5 +1,3 @@
-const cors = require("cors");
-
 const whitelist = [
   "http://localhost:3000",
   "http://credot.kr",
