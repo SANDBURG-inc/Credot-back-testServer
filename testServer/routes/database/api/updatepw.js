@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const url = require("url");
-
+const mariadb = require("../dbConnect");
 router.get("/", (req, res) => {
   let response = url.parse(req.url, true).query;
   let compareBool = false;
@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
     user["currentemail"],
   ];
 
-  con.query(compareSQL, compareParams, (err, result) => {
+  mariadb.query(compareSQL, compareParams, (err, result) => {
     if (err) {
       throw err;
     }
@@ -33,7 +33,7 @@ router.get("/", (req, res) => {
 
     switch (compareBool) {
       case true:
-        con.query(updateSQL, updateParams, (err, result) => {
+        mariadb.query(updateSQL, updateParams, (err, result) => {
           if (err) {
             throw err;
           }

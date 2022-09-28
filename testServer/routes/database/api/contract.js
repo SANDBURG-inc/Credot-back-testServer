@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const url = require("url");
+const mariadb = require("../dbConnect");
 
 router.get("/", (req, res) => {
   let response = url.parse(req.url, true).query;
@@ -25,7 +26,7 @@ router.get("/", (req, res) => {
     user["commerce"],
     user["status"],
   ];
-  con.query(sql, params, (err, result) => {
+  mariadb.query(sql, params, (err, result) => {
     if (err) {
       throw err;
       return res.send(false);

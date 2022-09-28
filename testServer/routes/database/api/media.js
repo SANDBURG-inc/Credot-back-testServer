@@ -1,8 +1,9 @@
 const router = require("express").Router();
+const mariadb = require("../dbConnect");
 
 router.get("/", (req, res) => {
-  var sql = "SELECT title, img, contents, date FROM media";
-  con.query(sql, (err, result) => {
+  const sql = "SELECT title, img, contents, date FROM media";
+  mariadb.query(sql, (err, result) => {
     if (err) {
       throw err;
     }
