@@ -3,22 +3,20 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy;
 const logger = require("morgan");
 const http = require("http");
 const mariadb = require("./routes/database/dbConnect");
-const Memorystore = require("memorystore")(session);
-const corsOptions = require("./corsOption/cors");
+const cors = require("cors");
+const session = require("express-session");
+const corsOptions = require("./option/corsOption");
+const sessionOption = require("./option/sessionOption");
 
 const commerceRouter = require("./routes/commerce/commerceController");
 const dbRouter = require("./routes/database/databaseController");
 
 const app = express();
-
-app.use(cors(corsOptions));
-app.use(cookieParser());
 
 mariadb.connect((err) => {
   if (err) throw err;
@@ -28,24 +26,12 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 9000);
 
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(
-  session({
-    key: "credotCookie",
-    secret: "credot",
-    resave: false,
-    saveUninitialized: true,
-    store: new Memorystore({ checkPeriod: 600000 }),
-    cookie: {
-      secure: false,
-      httpOnly: true,
-      SameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000 * 7,
-    },
-  })
-);
+app.use(session(sessionOption));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
@@ -134,7 +120,6 @@ app.get("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-
     res.redirect("/");
   });
 });
@@ -142,17 +127,13 @@ app.get("/logout", (req, res, next) => {
 app.use("/commerce", commerceRouter);
 app.use("/database", dbRouter);
 
-// catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
 });
 
-// error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
-
   res.status(err.status || 500);
   res.render("error");
 });
