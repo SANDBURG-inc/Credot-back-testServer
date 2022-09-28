@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const mariadb = require("../../../database/dbConnect");
 const url = require("url");
 
 const getContract = (req) => {
@@ -14,7 +15,7 @@ const getContract = (req) => {
     "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
   var params = [user["email"]];
 
-  con.query(sql, params, (err, result) => {
+  mariadb.query(sql, params, (err, result) => {
     if (err) {
       throw err;
     }

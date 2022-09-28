@@ -8,45 +8,19 @@ const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy;
 const logger = require("morgan");
 const http = require("http");
-const mariadb = require("mysql");
+const mariadb = require("./routes/database/dbConnect");
 const Memorystore = require("memorystore")(session);
-const cors = require("cors");
+const corsOptions = require("./corsOption/cors");
 
 const commerceRouter = require("./routes/commerce/commerceController");
 const dbRouter = require("./routes/database/databaseController");
 
 const app = express();
 
-const whitelist = [
-  "http://localhost:3000",
-  "http://credot.kr",
-  "http://3.38.232.237:3000",
-  "http://3.38.232.237",
-];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("NOT allowed"));
-    }
-  },
-  credentials: true,
-};
-
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-global.con = mariadb.createConnection({
-  host: "credot-rds.cccnip9rb8nn.ap-northeast-2.rds.amazonaws.com",
-  port: 3306,
-  user: "admin",
-  password: "sandburg123",
-  database: "credotClient",
-});
-
-con.connect((err) => {
+mariadb.connect((err) => {
   if (err) throw err;
 });
 
