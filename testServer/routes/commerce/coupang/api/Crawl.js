@@ -10,7 +10,6 @@ const getContract = (req) => {
   const user = {
     email: req.user.email,
   };
-  console.log(req.user);
   var sql =
     "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
   var params = [user["email"]];
@@ -34,7 +33,7 @@ router.post("/", (req, res, next) => {
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
-  console.log(req.user);
+  console.log(req.user.email);
   var queryData = url.parse(req.url, true).query;
 
   (async () => {

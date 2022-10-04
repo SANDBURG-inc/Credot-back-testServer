@@ -17,6 +17,7 @@ router.post("/login", (req, res, next) => {
         }
         console.log(user);
         console.log(req.isAuthenticated());
+        req.session.save();
         return res.send(json);
       });
     } else {
@@ -60,14 +61,24 @@ passport.deserializeUser((email, done) => {
   console.log("deserializeUser 실행");
   var userinfo;
   var sql = "SELECT * FROM client WHERE email=?";
-  con.query(sql, [email], (err, result) => {
+  mariadb.query(sql, [email], (err, result) => {
     if (err) console.log("mysql 에러");
 
-    console.log(LOG + "deserializeUser mysql result : ", result);
+    console.log("deserializeUser mysql result : ", result);
     var json = JSON.stringify(result[0]);
     userinfo = JSON.parse(json);
     done(null, userinfo);
   });
+});
+
+router.get("/", (req, res, next) => {
+  if (req.isAuthenticated()) {
+    console.log("유효");
+  } else {
+    console.log("만료된세션");
+  }
+  console.log(req.isAuthenticated());
+  res.send(req.user.email);
 });
 
 router.get("/logout", (req, res, next) => {
@@ -75,8 +86,8 @@ router.get("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.redirect("/");
   });
+  res.redirect("/");
 });
 
 module.exports = router;

@@ -34,17 +34,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res, next) => {
-  if (req.isAuthenticated()) {
-    console.log("유효");
-  } else {
-    console.log("만료된세션");
-  }
-  console.log(req.isAuthenticated());
-  console.log(req.user);
-  res.send(req.session.cookie);
-});
-
 app.use("/commerce", commerceRouter);
 app.use("/database", dbRouter);
 app.use("/passport", passportRouter);
