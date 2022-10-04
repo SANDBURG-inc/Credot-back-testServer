@@ -3,7 +3,6 @@ const mariadb = require("../../../database/dbConnect");
 const url = require("url");
 
 const getContract = (req) => {
-  console.log(req.user);
   if (req.user == undefined) {
     return 0;
   }

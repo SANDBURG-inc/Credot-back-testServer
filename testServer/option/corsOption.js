@@ -1,6 +1,6 @@
 const whitelist = [
   "http://localhost:3000",
-  "http://credot.kr",
+  "https://credot.kr",
   "http://3.38.232.237:3000",
   "http://3.38.232.237",
 ];
