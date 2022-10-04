@@ -3,8 +3,6 @@ const whitelist = [
   "https://credot.kr",
   "http://3.38.232.237:3000",
   "http://3.38.232.237",
-  "http://credotAPI-269032711.ap-northeast-2.elb.amazonaws.com",
-  "credotAPI-269032711.ap-northeast-2.elb.amazonaws.com",
 ];
 
 const corsOptions = {
