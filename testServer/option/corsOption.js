@@ -3,6 +3,7 @@ const whitelist = [
   "https://credot.kr",
   "http://3.38.232.237:3000",
   "http://3.38.232.237",
+  "http://172.31.0.0",
 ];
 
 const corsOptions = {
