@@ -9,7 +9,7 @@ const sessionOption = {
   store: new Memorystore({ checkPeriod: 600000 }),
   cookie: {
     secure: false,
-    httpOnly: true,
+    httpOnly: false,
     SameSite: "none",
     maxAge: 24 * 60 * 60 * 1000 * 7,
   },
