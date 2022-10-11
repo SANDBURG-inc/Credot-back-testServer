@@ -32,7 +32,6 @@ router.post("/", (req, res, next) => {
   var idpwError = false;
   var dashError = false;
   var calculateExist = false;
-  console.log(req.user.email);
   var queryData = url.parse(req.url, true).query;
 
   (async () => {

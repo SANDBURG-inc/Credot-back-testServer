@@ -11,10 +11,12 @@ const cors = require("cors");
 const session = require("express-session");
 const corsOptions = require("./option/corsOption");
 const sessionOption = require("./option/sessionOption");
+const fetch = require("node-fetch");
 
 const passportRouter = require("./passport/passport");
 const commerceRouter = require("./routes/commerce/commerceController");
 const dbRouter = require("./routes/database/databaseController");
+const getCorpState = require("./getCorpState/getCorpState");
 
 const app = express();
 
@@ -39,11 +41,15 @@ app.use("/database", dbRouter);
 app.use("/passport", passportRouter);
 
 app.use((err, req, res, next) => {
-  next(createError(404));
+  //next(createError(404));
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
   res.render("error");
+});
+
+app.get("/", (req, res) => {
+  getCorpState(res);
 });
 
 var server = app.listen(app.get("port"), () => {
