@@ -8,8 +8,8 @@ const sessionOption = {
   saveUninitialized: true,
   store: new Memorystore({ checkPeriod: 600000 }),
   cookie: {
-    secure: false,
-    httpOnly: false,
+    secure: true,
+    httpOnly: true,
     SameSite: "none",
     maxAge: 24 * 60 * 60 * 1000 * 7,
   },
