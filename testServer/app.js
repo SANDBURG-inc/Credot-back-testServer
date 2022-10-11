@@ -11,7 +11,6 @@ const cors = require("cors");
 const session = require("express-session");
 const corsOptions = require("./option/corsOption");
 const sessionOption = require("./option/sessionOption");
-// const getCorpState = require("./getCorpState/getCorpState");
 const fetch = require("node-fetch");
 
 const passportRouter = require("./passport/passport");
@@ -25,7 +24,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 9000);
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(session(sessionOption));
 app.use(cookieParser());
 app.use(logger("dev"));
@@ -42,7 +41,7 @@ app.use("/database", dbRouter);
 app.use("/passport", passportRouter);
 
 app.use((err, req, res, next) => {
-  next(createError(404));
+  //next(createError(404));
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
