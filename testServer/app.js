@@ -49,7 +49,7 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
-app.get("/", (req, res) => {
+app.get("/corpAuth", (req, res) => {
   var queryData = url.parse(req.url, true).query;
   getCorpState(res, queryData.code);
 });
