@@ -7,11 +7,11 @@ const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy;
 const logger = require("morgan");
 const http = require("http");
+const https = require("https");
 const cors = require("cors");
 const session = require("express-session");
 const corsOptions = require("./option/corsOption");
 const sessionOption = require("./option/sessionOption");
-const fetch = require("node-fetch");
 const url = require("url");
 
 const passportRouter = require("./passport/passport");
@@ -50,12 +50,17 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/corpAuth", (req, res) => {
-  var queryData = url.parse(req.url, true).query;
+  let queryData = url.parse(req.url, true).query;
   getCorpState(res, queryData.code);
 });
+var server = https
+  .createServer((req, res) => {})
+  .listen(app.get("port"), () => {
+    console.log("Express server listening in port " + server.address().port);
+  });
 
-var server = app.listen(app.get("port"), () => {
-  console.log("Express server listening in port " + server.address().port);
-});
+// var server = app.listen(app.get("port"), () => {
+//   console.log("Express server listening in port " + server.address().port);
+// });
 
 module.exports = app;
