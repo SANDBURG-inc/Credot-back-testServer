@@ -42,7 +42,6 @@ app.use("/database", dbRouter);
 app.use("/passport", passportRouter);
 
 app.use((err, req, res, next) => {
-  //next(createError(404));
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
@@ -53,11 +52,6 @@ app.get("/corpAuth", (req, res) => {
   let queryData = url.parse(req.url, true).query;
   getCorpState(res, queryData.code);
 });
-// var server = https
-//   .createServer((req, res) => {})
-//   .listen(app.get("port"), () => {
-//     console.log("Express server listening in port " + server.address().port);
-//   });
 
 var server = app.listen(app.get("port"), () => {
   console.log("Express server listening in port " + server.address().port);
