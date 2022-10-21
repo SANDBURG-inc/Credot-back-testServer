@@ -53,14 +53,14 @@ app.get("/corpAuth", (req, res) => {
   let queryData = url.parse(req.url, true).query;
   getCorpState(res, queryData.code);
 });
-var server = https
-  .createServer((req, res) => {})
-  .listen(app.get("port"), () => {
-    console.log("Express server listening in port " + server.address().port);
-  });
+// var server = https
+//   .createServer((req, res) => {})
+//   .listen(app.get("port"), () => {
+//     console.log("Express server listening in port " + server.address().port);
+//   });
 
-// var server = app.listen(app.get("port"), () => {
-//   console.log("Express server listening in port " + server.address().port);
-// });
+var server = app.listen(app.get("port"), () => {
+  console.log("Express server listening in port " + server.address().port);
+});
 
 module.exports = app;
