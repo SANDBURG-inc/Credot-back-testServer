@@ -13,5 +13,6 @@ const sessionOption = {
     SameSite: "none",
     maxAge: 24 * 60 * 60 * 1000 * 7,
   },
+  rolling: true,
 };
 module.exports = sessionOption;
