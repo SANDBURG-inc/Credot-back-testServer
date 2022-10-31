@@ -3,24 +3,13 @@ const fetch = require("node-fetch");
 const getCorpState = async (corpCode) => {
   let serviceKey =
     "3H51tq2Dp6Ry1XP7jXA4AcqpRnAcLcXC2cp%2B0vfgi1QlUEpH32UBxa56nJFWB5JCIRFv2saLmcgQ1iDwv5ecHg%3D%3D";
-  let returnData;
-  console.log("dd");
-  await fetch(
+  let response = await fetch(
     "http://apis.data.go.kr/1130000/MllBsService/getMllBsBiznoInfo?serviceKey=" +
       serviceKey +
       "&pageNo=1&numOfRows=10&resultType=json&bizrno=" +
       corpCode
-  )
-    .then((response) => {
-      console.log("dd");
-      console.log(response.json());
-      return response.json();
-    })
-    .then((response) => {
-      console.log(response);
-      console.log("ss");
-      returnData = response;
-    });
+  );
+  let returnData = await response.json();
   return returnData;
 };
 
