@@ -22,8 +22,6 @@
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.20",
-    "passport": "^0.6.0",
-    "passport-local": "^1.0.0",
     "puppeteer": "^15.4.1",
     "puppeteer-core": "^15.4.1"
   }
