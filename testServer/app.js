@@ -26,15 +26,12 @@ app.use(cookieParser());
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(passport.initialize());
-// app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/commerce", commerceRouter);
 app.use("/database", dbRouter);
-//app.use("/passport", passportRouter);
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
