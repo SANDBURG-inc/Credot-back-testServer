@@ -3,8 +3,6 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const passport = require("passport"),
-  LocalStrategy = require("passport-local").Strategy;
 const logger = require("morgan");
 const cors = require("cors");
 const session = require("express-session");
@@ -12,7 +10,6 @@ const corsOptions = require("./option/corsOption");
 const sessionOption = require("./option/sessionOption");
 const url = require("url");
 
-const passportRouter = require("./passport/passport");
 const commerceRouter = require("./routes/commerce/commerceController");
 const dbRouter = require("./routes/database/databaseController");
 const getCorpState = require("./getCorpState/corpAuthentication");
@@ -29,15 +26,12 @@ app.use(cookieParser());
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/commerce", commerceRouter);
 app.use("/database", dbRouter);
-app.use("/passport", passportRouter);
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
@@ -47,6 +41,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/corpAuth", (req, res) => {
+  console.log("dd");
   let queryData = url.parse(req.url, true).query;
   getCorpState(res, queryData.code);
 });
