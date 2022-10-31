@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport"),
-  LocalStrategy = require("passport-local").Strategy;
 const mariadb = require("../routes/database/dbConnect");
 
 router.post("/login", (req, res, next) => {

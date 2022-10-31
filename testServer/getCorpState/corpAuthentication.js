@@ -4,7 +4,7 @@ const getCorpState = async (corpCode) => {
   let serviceKey =
     "3H51tq2Dp6Ry1XP7jXA4AcqpRnAcLcXC2cp%2B0vfgi1QlUEpH32UBxa56nJFWB5JCIRFv2saLmcgQ1iDwv5ecHg%3D%3D";
   let returnData;
-
+  console.log("dd");
   await fetch(
     "http://apis.data.go.kr/1130000/MllBsService/getMllBsBiznoInfo?serviceKey=" +
       serviceKey +
@@ -12,9 +12,13 @@ const getCorpState = async (corpCode) => {
       corpCode
   )
     .then((response) => {
+      console.log("dd");
+      console.log(response.json());
       return response.json();
     })
     .then((response) => {
+      console.log(response);
+      console.log("ss");
       returnData = response;
     });
   return returnData;
@@ -22,8 +26,7 @@ const getCorpState = async (corpCode) => {
 
 module.exports = async (res, corpNum) => {
   let stringfiedCode = corpNum.split("-").join("");
-  let data;
-  data = await getCorpState(stringfiedCode);
+  let data = await getCorpState(stringfiedCode);
   if (Object.keys(data.items).length == 0) {
     res.send("통신판매업 등록자가 아닙니다.");
     return 0;
