@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const crawl = require("./api/Crawl.js");
+const auth = require("./api/Auth.js");
 
-const crawlRouter = require("./api/Crawl.js");
-const authRouter = require("./api/Auth.js");
-
-router.get("/", (req, res) => {
-  res.send("coupang");
+router.get("/crawl", async (req, res) => {
+  crawl(req, res);
 });
-
-router.use("/crawl", crawlRouter);
-router.use("/auth", authRouter);
+router.get("/auth", async (req, res) => {
+  auth(req, res);
+});
 
 module.exports = router;

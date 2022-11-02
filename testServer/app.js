@@ -46,7 +46,7 @@ app.get("/corpAuth", (req, res) => {
   getCorpState(res, queryData.code);
 });
 
-var server = app.listen(app.get("port"), () => {
+let server = app.listen(app.get("port"), () => {
   console.log("Express server listening in port " + server.address().port);
 });
 
