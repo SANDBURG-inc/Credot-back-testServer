@@ -3,10 +3,6 @@ const router = express.Router();
 
 const coupangRouter = require("./coupang/coupangController.js");
 
-router.get("/", (req, res) => {
-  res.send("commerce");
-});
-
 const puppeteer = require("puppeteer");
 (async () => {
   global.browser = await puppeteer

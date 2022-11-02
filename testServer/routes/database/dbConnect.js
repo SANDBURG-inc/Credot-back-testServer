@@ -1,9 +1,9 @@
 const mariadb = require("mysql");
 connection = mariadb.createConnection({
-  host: "13.125.82.93",
+  host: "3.34.155.60",
   port: 3306,
   user: "sandburg",
   password: "sandburg123!",
-  database: "credotClient",
+  database: "credot_database",
 });
 module.exports = connection;

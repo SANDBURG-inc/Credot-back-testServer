@@ -1,0 +1,27 @@
+const mariadb = require("../../../database/dbConnect");
+
+module.exports = (req) => {
+  if (req.user == undefined) {
+    return 0;
+  }
+  const user = {
+    email: req.user.email,
+  };
+  let sql =
+    "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
+  let params = [user["email"]];
+
+  mariadb.query(sql, params, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    if (Object.keys(result).length == 0) {
+      return 0;
+    }
+    let sum = 0;
+    for (let i = 0; i < Object.keys(result).length; i++) {
+      sum += parseInt(result[i].ammount);
+    }
+    return sum;
+  });
+};
