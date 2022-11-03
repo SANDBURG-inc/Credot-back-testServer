@@ -1,12 +1,13 @@
 const mariadb = require("../../../database/dbConnect");
 
 module.exports = (req) => {
-  if (req.user == undefined) {
+  const user = {
+    email: req.body.uid,
+  };
+  console.log(user.email);
+  if (user["email"] == "") {
     return 0;
   }
-  const user = {
-    email: req.user.email,
-  };
   let sql =
     "SELECT ammount FROM contract WHERE email=? and DATE_FORMAT(contractDate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');";
   let params = [user["email"]];

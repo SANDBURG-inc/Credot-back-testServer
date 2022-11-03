@@ -6,7 +6,7 @@ const crawl = async (req, res) => {
   let idpwError = await modules.isIdPwError(queryData, false);
   let dashError = await modules.isDashError(idpwError);
   let calculateExist = await modules.isCalculationExists(dashError);
-  await modules.getSettlement(calculateExist);
+  await modules.getSettlement(req, calculateExist);
   console.log(idpwError, dashError, calculateExist);
 
   switch (true) {
