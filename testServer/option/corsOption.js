@@ -6,7 +6,7 @@ const whitelist = [
 ];
 
 const corsOptions = {
-  origin: whitelist,
+  origin: "https://credot.kr",
   credentials: true,
 };
 
