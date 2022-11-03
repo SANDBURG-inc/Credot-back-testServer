@@ -1,0 +1,26 @@
+{
+  "config": {
+    "target": "http://localhost:9000",
+    "phases": [
+      {
+        "duration": 60,
+        "arrivalRate": 30
+      }
+    ],
+    "payload": {
+      "path": "./data.csv",
+      "fields": ["id", "pw"]
+    }
+  },
+  "scenarios": [
+    {
+      "flow": [
+        {
+          "post": {
+            "url": "/commerce/crawl?id={{id}}&pw={{pw}}"
+          }
+        }
+      ]
+    }
+  ]
+}
