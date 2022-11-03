@@ -90,7 +90,7 @@ const isAuthError = async (queryData) => {
   return false;
 };
 
-const getSettlement = async (calculateExist) => {
+const getSettlement = async (req, calculateExist) => {
   if (calculateExist) {
     await page.waitForTimeout(2000);
     let data = await page.evaluate(async () => {
