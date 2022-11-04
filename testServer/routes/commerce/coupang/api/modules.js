@@ -91,7 +91,7 @@ const isAuthError = async (queryData) => {
   return false;
 };
 
-const getSettlement = async (calculateExist) => {
+const getSettlement = async (req, calculateExist, res) => {
   if (calculateExist) {
     await page.waitForTimeout(2000);
     let data = await page.evaluate(async () => {
@@ -113,7 +113,7 @@ const getSettlement = async (calculateExist) => {
     );
     console.log("ok");
     res.json({
-      price: data[0],
+      price: data[0] - getContract(req),
       deadline: data[1],
       btDay: btDay,
       fee: fee,
