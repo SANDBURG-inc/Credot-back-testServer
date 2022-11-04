@@ -31,6 +31,7 @@ const isIdPwError = async (queryData, idpwError) => {
     console.log("idpwError:" + idpwError);
     return idpwError;
   }
+  return false;
 };
 
 const isDashError = async (idpwError) => {
