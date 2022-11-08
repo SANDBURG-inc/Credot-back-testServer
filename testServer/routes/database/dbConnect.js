@@ -5,5 +5,6 @@ connection = mariadb.createConnection({
   user: "sandburg",
   password: "sandburg123!",
   database: "credot_database",
+  ssl: false,
 });
 module.exports = connection;

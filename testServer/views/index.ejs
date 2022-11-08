@@ -1,11 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title>API TEST</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
+  <style>
+    .api {
+      padding-top: 50px;
+    }
+    #input1 {
+      width: 200px;
+      height: 25px;
+    }
+    #input2 {
+      width: 200px;
+      height: 25px;
+    }
+  </style>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>API TEST PAGE</h1>
+    <div class="api" id="coupang">
+      <h2>
+        Coupang API
+        <h4>localhost:9000/commerce/coupang/crawl</h4>
+      </h2>
+      <form action="post">
+        <input type="text" placeholder="id" id="input1" />
+        <input type="test" placeholder="password" id="input2" />
+        <input type="submit" value="조회" />
+      </form>
+    </div>
+    <div class="api" id="tmon">
+      <h2>
+        Tmon API
+        <h4>localhost:9000/commerce/tmon/crawl</h4>
+      </h2>
+      <form action="post">
+        <input type="text" placeholder="id" id="input1" />
+        <input type="test" placeholder="password" id="input2" />
+        <input type="submit" value="조회" />
+      </form>
+    </div>
+    <div class="api" id="wemakeprice">
+      <h2>
+        WeMakePrice API
+        <h4>localhost:9000/commerce/wemakeprice/crawl</h4>
+      </h2>
+      <form action="post">
+        <input type="text" placeholder="id" id="input1" />
+        <input type="test" placeholder="password" id="input2" />
+        <input type="submit" value="조회" />
+      </form>
+    </div>
   </body>
 </html>

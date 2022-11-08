@@ -13,14 +13,21 @@ const url = require("url");
 const commerceRouter = require("./routes/commerce/commerceController");
 const dbRouter = require("./routes/database/databaseController");
 const getCorpState = require("./getCorpState/corpAuthentication");
+const mariadb = require("./routes/database/dbConnect");
 
 const app = express();
+mariadb.connect(function (err) {
+  if (err) {
+    throw err;
+  }
+  console.log("connection");
+});
 
-app.set("views", path.join(__dirname, "views"));
+app.set("views", "./views");
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 9000);
 
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 app.use(session(sessionOption));
 app.use(cookieParser());
 app.use(logger("dev"));
@@ -40,6 +47,9 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
+app.get("/", (req, res) => {
+  res.render("index");
+});
 app.get("/corpAuth", (req, res) => {
   console.log("dd");
   let queryData = url.parse(req.url, true).query;

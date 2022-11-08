@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
   };
 
   var sql =
-    "INSERT INTO contract(email, sign, contractDate, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO contracts(email, sign, contractDate, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
 
   var params = [
     user["email"],
