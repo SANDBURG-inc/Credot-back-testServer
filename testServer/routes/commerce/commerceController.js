@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const coupangRouter = require("./coupang/coupangController.js");
+const tmonRouter = require("./tmon/tmonController.js");
+const wemakepriceRouter = require("./wemakeprice/wmpController.js");
 
 const puppeteer = require("puppeteer");
 (async () => {
@@ -16,5 +18,7 @@ const puppeteer = require("puppeteer");
 })();
 
 router.use("/coupang", coupangRouter);
+router.use("/tmon", tmonRouter);
+router.use("/wmp", wemakepriceRouter);
 
 module.exports = router;

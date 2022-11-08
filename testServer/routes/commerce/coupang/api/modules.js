@@ -1,4 +1,4 @@
-const getContract = require("./getContract");
+const getContract = require("../../getContract");
 
 const isIdPwError = async (queryData, idpwError) => {
   if (queryData.id && queryData.pw) {
