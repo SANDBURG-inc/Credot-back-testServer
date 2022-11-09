@@ -27,7 +27,7 @@ app.set("views", "./views");
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 9000);
 
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(session(sessionOption));
 app.use(cookieParser());
 app.use(logger("dev"));
