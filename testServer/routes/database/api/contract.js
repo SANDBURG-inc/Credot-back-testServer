@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const url = require("url");
 const mariadb = require("../dbConnect");
+const fetch = require("node-fetch");
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   let response = url.parse(req.url, true).query;
   const user = {
     email: response.email,
@@ -14,25 +15,30 @@ router.get("/", (req, res) => {
     status: response.status,
   };
 
-  var sql =
-    "INSERT INTO contracts(email, sign, contractDate, deadline, ammount, commerce, status) VALUES (?,?,?,?,?,?,?)";
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body:
+      '{"data":{"email":' +
+      user.email +
+      ',"sign":' +
+      user.sign +
+      ',"commerce":' +
+      user.commerce +
+      ',"ammount":' +
+      user.ammount +
+      ',"contractDate":' +
+      user.contractDate +
+      ',"deadline":' +
+      user.deadline +
+      "}}",
+  };
 
-  var params = [
-    user["email"],
-    user["sign"],
-    user["contractDate"],
-    user["deadline"],
-    user["ammount"],
-    user["commerce"],
-    user["status"],
-  ];
-  mariadb.query(sql, params, (err, result) => {
-    if (err) {
-      throw err;
-      return res.send(false);
-    }
-  });
-
+  let success = await fetch("https://cms.credot.kr/api/contracts", options);
+  let returnData = await success.json();
+  if (returnData.error != undefined) {
+    return res.status(400);
+  }
   return res.send(true);
 });
 
