@@ -5,7 +5,6 @@ const auth = async (req, res) => {
   let queryData = url.parse(req.url, true).query;
   let authError = await modules.isAuthError(queryData);
   let calculateExist = await modules.isCalculationExists(authError);
-  await modules.getSettlement(calculateExist);
 
   switch (true) {
     case authError & !calculateExist:
@@ -15,7 +14,7 @@ const auth = async (req, res) => {
       res.send("104");
       break;
     default:
-      //await page.waitForSelector("#wing-top-main-side-menu");
+      await modules.getSettlement(calculateExist);
       console.log("ok");
       break;
   }
