@@ -34,25 +34,25 @@ const isIdPwError = async (queryData, idpwError) => {
   return false;
 };
 
-const isDashError = async (idpwError) => {
+const isLoginAuth = async (idpwError) => {
   if (idpwError == false) {
     //idpw분기처리
 
-    dashError = await page.evaluate(async () => {
+    errored = await page.evaluate(async () => {
       //대시보드 에러 판단
       return (
         document.querySelector('button[id="top-header-hamburger"]') !== null
       );
     });
 
-    console.log("dashError:" + dashError);
-    return dashError;
+    console.log("isLoginAuth:" + errored);
+    return errored;
   }
   return false;
 };
 
-const isCalculationExists = async (dashError) => {
-  if (dashError) {
+const isCalculationExists = async (isLoginAuth) => {
+  if (isLoginAuth) {
     //아이디비번이 정상이지만 접속로그때문에 대시보드로 바로 진입할때
     await page.goto(
       "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
@@ -108,12 +108,10 @@ const getSettlement = async (req, calculateExist, res) => {
     let btDay = parseInt(
       (endDate.getTime() - stDate.getTime()) / (1000 * 60 * 60 * 24)
     );
-    let fee = parseInt(
-      parseFloat(data[0].replace(/,/g, "")) * (0.0004 * btDay)
-    );
-    console.log("ok");
+    let fee = parseInt(parseFloat(data[0].replace(/,/g, "")) * (0.004 * btDay));
+    prevContract = await getContract(req);
     res.json({
-      price: data[0] - getContract(req),
+      price: parseFloat(data[0].replace(/,/g, "")) - prevContract,
       deadline: data[1],
       btDay: btDay,
       fee: fee,
@@ -124,7 +122,7 @@ const getSettlement = async (req, calculateExist, res) => {
 
 module.exports = {
   isIdPwError,
-  isDashError,
+  isLoginAuth,
   isAuthError,
   isCalculationExists,
   getSettlement,

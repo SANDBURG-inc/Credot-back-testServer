@@ -1,32 +1,43 @@
-const isIdPwError = async (queryData, idpwError) => {
-  if (queryData.id && queryData.pw) {
-    const tmon_id = queryData.id;
-    const tmon_pw = queryData.pw;
+const fs = require("fs");
+const http = require("http");
 
-    await page.goto("https://spc.tmon.co.kr/member/login");
+const serverStaticFiles = (res, path, contentType, responseCode = 200) => {
+  fs.readFile(__dirname + path, (err, data) => {
+    if (err) {
+      res.setHeader("Content-Type", "image/png");
+      res.writeHead(500, { "Content-Type": "image/png" });
+      return res.end("500 - 서버에러");
+    }
+    res.writeHead(responseCode, { "Content-Type": contentType });
+    res.end(data);
+  });
+};
 
-    await page.evaluate(
-      (id, pw) => {
-        document.querySelector('input[id="form_id"]').value = id;
-        document.querySelector('input[name="form_password"]').value = pw;
-      },
-      tmon_id,
-      tmon_pw
-    );
+const isIdPwError = async (queryData, res) => {
+  const wmp_id = queryData.id;
+  const wmp_pw = queryData.pw;
 
-    //로그인
-    await page.click('button[class="btn submit"]');
+  await page.goto("https://wpartner.wemakeprice.com/login");
 
-    page.on("dialog", async (dialog) => {
-      const isDialog = await dialog.dismiss();
-      return new Promise(function (resolve, reject) {
-        resolve(isDialog);
-      });
-    });
+  await page.evaluate(
+    (id, pw) => {
+      document.querySelector('input[name="loginid"]').value = id;
+      document.querySelector('input[name="loginpassword"]').value = pw;
+    },
+    wmp_id,
+    wmp_pw
+  );
 
-    console.log("idpwError:" + idpwError);
-    return idpwError;
-  }
+  await page.waitForSelector("#_captchaImage");
+  const element = await page.$("#_captchaImage"); // queryselector로 변수 지정 해놓기
+  await element.screenshot({ path: __dirname + "captchaImage.png" });
+
+  data = fs.readFileSync("apicaptchaImage.png");
+
+  res.writeHead(200, { "Content-Type": "image/png" });
+  res.write(data);
+  res.end();
+
   return false;
 };
 
