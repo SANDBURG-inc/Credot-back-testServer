@@ -13,16 +13,16 @@ const crawl = async (req, res) => {
     case idpwError:
       res.send("101");
       break;
-    case !isLoginAuth & !calculateExist:
-      res.send("102");
-      break;
-    case !isLoginAuth:
+    case isLoginAuth:
       await page.waitForSelector("#btnEmail");
       await page.click("#btnEmail");
       // await page.waitForSelector('input[name="mfaType"]');
       // await page.click('input[name="mfaType"]');
       await page.waitForSelector("#auth-mfa-code");
       res.send("200");
+      break;
+    case !isLoginAuth & !calculateExist:
+      res.send("102");
       break;
     default:
   }

@@ -38,17 +38,20 @@ const isLoginAuth = async (idpwError) => {
   if (idpwError == false) {
     //idpw분기처리
 
-    errored = await page.evaluate(async () => {
-      //대시보드 에러 판단
-      return (
+    isAuth = await page.evaluate(async () => {
+      if (
         document.querySelector('button[id="top-header-hamburger"]') !== null
-      );
+      ) {
+        //햄버거가 있으면
+        return false;
+      } else {
+        return true;
+      }
     });
 
-    console.log("isLoginAuth:" + errored);
-    return errored;
+    console.log("isLoginAuth:" + isAuth);
+    return isAuth;
   }
-  return false;
 };
 
 const isCalculationExists = async (isLoginAuth) => {
