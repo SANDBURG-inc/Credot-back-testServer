@@ -46,7 +46,6 @@ const isIdPwError = async (queryData) => {
 const isLoginAuth = async (idpwError) => {
   return new Promise(async (resolve, reject) => {
     if (idpwError == false) {
-      console.log("머지");
       //idpw분기처리
       let isAuth = await page.evaluate(() => {
         if (
@@ -59,9 +58,8 @@ const isLoginAuth = async (idpwError) => {
         }
       });
       resolve(isAuth);
-    } else {
-      resolve(false);
     }
+    resolve(true);
   });
 };
 
@@ -112,7 +110,6 @@ const isAuthError = async (queryData) => {
 const getSettlement = async (req, calculateExist, res) => {
   return new Promise(async (resolve, reject) => {
     if (calculateExist) {
-      console.log("ddd");
       await page.waitForTimeout(2000);
       let data = await page.evaluate(async () => {
         const calculation = document.querySelector(
