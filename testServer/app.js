@@ -50,8 +50,8 @@ app.use((err, req, res, next) => {
 app.get("/", (req, res) => {
   res.render("index");
 });
+
 app.get("/corpAuth", (req, res) => {
-  console.log("dd");
   let queryData = url.parse(req.url, true).query;
   getCorpState(res, queryData.code);
 });
