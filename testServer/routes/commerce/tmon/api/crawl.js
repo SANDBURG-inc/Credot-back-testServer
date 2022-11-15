@@ -16,7 +16,21 @@ const crawl = async (req, res) => {
   data = await page.evaluate(() => {
     return document.querySelector('p[class="pointClr fw-b fz14"]').innerText;
   });
-  res.send(data);
+  let stDate = new Date();
+  let last = new Date(2020, stDate.getMonth() - 1, 0); //지난달 말일 구하기
+  last.setDate(last.getDate() + 35); // 지난달 말일에 35일 더해서 update
+  let btDay = await parseInt(
+    (last.getTime() - stDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  let fee = await parseInt(
+    parseFloat(data.replace(/,/g, "")) * (0.004 * btDay)
+  );
+  res.json({
+    price: parseFloat(data),
+    deadline: last,
+    btDay: btDay,
+    fee: fee,
+  });
 };
 
 module.exports = crawl;

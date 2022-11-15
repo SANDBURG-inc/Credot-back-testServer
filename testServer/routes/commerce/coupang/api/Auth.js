@@ -10,10 +10,10 @@ module.exports = async (req, res) => {
   console.log("calculateExist:", _calculateExist);
 
   switch (true) {
-    case _authError & !_calculateExist:
+    case !_authError & !_calculateExist: //auth error = false이고 정산현황 없을때
       res.send("103");
       break;
-    case !_authError:
+    case _authError: //autherror 존재할때
       res.send("104");
       break;
     default:

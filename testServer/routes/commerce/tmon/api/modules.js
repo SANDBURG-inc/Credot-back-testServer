@@ -1,4 +1,5 @@
 const isIdPwError = async (queryData) => {
+  let error = false;
   const update = async () => {
     error = true;
   };

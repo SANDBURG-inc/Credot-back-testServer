@@ -6,7 +6,9 @@ const isIdPwError = async (queryData) => {
     const coupang_pw = queryData.pw;
 
     //쿠팡wing 로그인 페이지
-    await page.goto("https://wing.coupang.com/login");
+    await page.goto("https://wing.coupang.com/login", {
+      waitUntil: "networkidle2",
+    });
 
     //아이디랑 비밀번호 란에 값을 넣기
     await page.evaluate(
@@ -101,7 +103,11 @@ const isAuthError = async (queryData) => {
     //인증번호 분기처리
     await page.waitForTimeout(2000);
     authError = await page.evaluate(() => {
-      return document.querySelector('span[id="input-error"]') !== null;
+      if (document.querySelector('span[id="input-error"]') == null) {
+        return false;
+      } else {
+        return true;
+      }
     });
     resolve(authError);
   });
@@ -125,12 +131,11 @@ const getSettlement = async (req, calculateExist, res) => {
       let btDay = await parseInt(
         (endDate.getTime() - stDate.getTime()) / (1000 * 60 * 60 * 24)
       );
-      let fee = await parseInt(
-        parseFloat(data[0].replace(/,/g, "")) * (0.004 * btDay)
-      );
       prevContract = await getContract(req);
+      let price = parseFloat(data[0].replace(/,/g, "")) - prevContract;
+      let fee = await parseInt(parseFloat(price) * (0.004 * btDay));
       res.json({
-        price: parseFloat(data[0].replace(/,/g, "")) - prevContract,
+        price: price,
         deadline: data[1],
         btDay: btDay,
         fee: fee,
