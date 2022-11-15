@@ -4,7 +4,7 @@ const modules = require("./modules");
 module.exports = async (req, res) => {
   let queryData = url.parse(req.url, true).query;
 
-  let _idpwError = await modules.isIdPwError(queryData);
+  let _idpwError = await modules.isIdPwError(queryData, res);
   console.log("_idpwError:", _idpwError);
   let _isLoginAuth = await modules.isLoginAuth(_idpwError);
   console.log("_isLoginAuth:", _isLoginAuth);

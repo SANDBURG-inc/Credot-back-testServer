@@ -1,6 +1,6 @@
 const getContract = require("../../getContract");
 
-const isIdPwError = async (queryData) => {
+const isIdPwError = async (queryData, res) => {
   return new Promise(async (resolve, reject) => {
     const coupang_id = queryData.id;
     const coupang_pw = queryData.pw;
@@ -22,16 +22,24 @@ const isIdPwError = async (queryData) => {
 
     //로그인
     await page.click('input[name="login"]');
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
 
     let ischangeBtn = await page.evaluate(() => {
       //idpw에러 판단
-      let check = document.querySelector('button[class="change-btn"]') !== null;
-      return check; //있으면 true, 없으면 false
+      if (document.querySelector('button[class="change-btn"]') == null) {
+        return false;
+      } else {
+        return true;
+      }
     });
 
+    console.log(ischangeBtn);
+
     if (ischangeBtn) {
+      await page.waitForSelector('button[class="icon-close"]');
       await page.click('button[class="icon-close"]');
+      res.send("105");
+      return;
     }
 
     //idpw 분기처리
