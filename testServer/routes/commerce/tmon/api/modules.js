@@ -13,7 +13,9 @@ const isIdPwError = async (queryData) => {
   const tmon_id = queryData.id;
   const tmon_pw = queryData.pw;
 
-  await page.goto("https://spc.tmon.co.kr/member/login");
+  await page.goto("https://spc.tmon.co.kr/member/login", {
+    waitUntil: "networkidle2",
+  });
 
   await page.evaluate(
     (id, pw) => {
