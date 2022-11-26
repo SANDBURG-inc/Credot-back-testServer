@@ -1,23 +1,24 @@
 const e = require("express");
 const fs = require("fs");
 
-const isCaptcha = async (req, res) => {
+const isCaptcha = async () => {
   return new Promise(async (resolve, reject) => {
     await page.goto("https://wpartner.wemakeprice.com/login", {
       waitUntil: "networkidle2",
     });
     let noCaptcha = await page.evaluate(() => {
-      if (document.querySelector('img[id="_captchaImage"]') == null) {
+      if (document.querySelector('div[class="img_captcha"]') == null) {
         return true;
       } else {
         return false;
       }
     });
-    noCaptcha ? reject() : resolve();
+    console.log(noCaptcha);
+    noCaptcha ? reject() : resolve(); //captcha 없으면 reject
   });
 };
 
-const getImage = (req, res) => {
+const getImage = (res) => {
   return new Promise(async (resolve, reject) => {
     await page.waitForSelector("#_captchaImage");
     const element = await page.$("#_captchaImage"); // queryselector로 변수 지정 해놓기
@@ -30,7 +31,7 @@ const getImage = (req, res) => {
   });
 };
 
-const refresh = async (req, res) => {
+const refresh = async (res) => {
   console.log("refresh");
   await page.click('a[class="btn_sys sml_m btn_cap_2"]').then(async () => {
     await page.waitForSelector('img[id="_captchaImage"]');
@@ -44,7 +45,7 @@ const refresh = async (req, res) => {
   });
 };
 
-const inputCode = async (req, res) => {
+const inputCode = async (req) => {
   const wmp_id = req.body.id;
   const wmp_pw = req.body.pw;
   const wmp_input = req.body.input;
@@ -61,7 +62,7 @@ const inputCode = async (req, res) => {
   );
 };
 
-const inputWithOutCaptcha = async (req, res) => {
+const inputWithOutCaptcha = async (req) => {
   const wmp_id = req.body.id;
   const wmp_pw = req.body.pw;
   await page.evaluate(
