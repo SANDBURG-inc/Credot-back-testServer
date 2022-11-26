@@ -13,23 +13,25 @@ const fs = require("fs");
 router.use("/crawl", async (req, res, next) => {
   switch (req.query.option) {
     case "isCaptcha":
-      await isCaptcha(req, res)
+      await isCaptcha()
         .then(() => {
-          res.status(200);
+          //captcha resolve
+          res.send(200);
         })
         .catch(() => {
-          inputWithOutCaptcha(req, res);
+          //captcha reject
+          inputWithOutCaptcha(req);
           next();
         });
       break;
     case "getImage":
-      await getImage(req, res);
+      await getImage(res);
       break;
     case "refresh":
-      await refresh(req, res);
+      await refresh(res);
       break;
     case "input":
-      await inputCode(req, res);
+      await inputCode(req);
       next();
       break;
   }
