@@ -78,18 +78,17 @@ const isCalculationExists = async (isLoginAuth) => {
     if (!isLoginAuth) {
       //아이디비번이 정상이지만 접속로그때문에 대시보드로 바로 진입할때
       await page.goto(
-        "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard"
+        "https://wing.coupang.com/tenants/finance/wing/contentsurl/dashboard",
+        {
+          waitUntil: "networkidle2",
+        }
       ); //정산현황페이지로 이동
-
-      await page.waitForSelector(
-        "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
-      );
 
       let calculateExist = await page.evaluate(async () => {
         //정산현황 여부 판단
         return (
           document.querySelector(
-            "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
+            "#dashboard-summary-final > td.text-right.price > span > strong"
           ) !== null
         );
       });
@@ -127,12 +126,12 @@ const getSettlement = async (req, calculateExist, res) => {
       await page.waitForTimeout(2000);
       let data = await page.evaluate(async () => {
         const calculation = document.querySelector(
-          "#seller-dashboard > div.dashboard-widget > div > strong:nth-child(3) > a"
+          "#dashboard-summary-final > td.text-right.price > span > strong"
         );
-        const expectedDate = document.querySelector(
-          'strong[id="expectedPayDate"]'
-        );
-        return [calculation.textContent, expectedDate.textContent];
+        // const expectedDate = document.querySelector(
+        //   'strong[id="expectedPayDate"]'
+        // );
+        return [calculation.textContent, "2022-12-30"];
       });
       let stDate = new Date();
       let endDate = new Date(data[1]);
