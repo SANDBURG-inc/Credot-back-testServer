@@ -7,6 +7,7 @@ const isCaptcha = async () => {
       waitUntil: "networkidle2",
     });
     let noCaptcha = await page.evaluate(() => {
+      //단순하게 querySelector로 img captcha가 존재하는지 여부 판단
       if (document.querySelector('div[class="img_captcha"]') == null) {
         return true;
       } else {
@@ -22,11 +23,11 @@ const getImage = (res) => {
   return new Promise(async (resolve, reject) => {
     await page.waitForSelector("#_captchaImage");
     const element = await page.$("#_captchaImage"); // queryselector로 변수 지정 해놓기
-    await element.screenshot({ path: __dirname + "apicaptchaImage.png" });
+    await element.screenshot({ path: __dirname + "apicaptchaImage.png" }); //captcha이미지 캡쳐 후 서버내에 저장
     let data = await fs.readFileSync(__dirname + "apicaptchaImage.png");
-    await res.type("image/png");
-    await res.write(data);
-    await res.send();
+    await res.type("image/png"); //응답헤더에 image/png헤더 설정
+    await res.write(data); //readFileSync를 통해 동기적으로 읽어온 서버내의 captcha파일을 응답바디에 작성
+    await res.send(); //응답전송
     resolve();
   });
 };

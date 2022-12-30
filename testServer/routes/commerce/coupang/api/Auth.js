@@ -10,13 +10,13 @@ module.exports = async (req, res) => {
   console.log("calculateExist:", _calculateExist);
 
   switch (true) {
-    case !_authError & !_calculateExist: //auth error = false이고 정산현황 없을때
+    case !_authError & !_calculateExist: //인증절차에서 사용자가 인증번호를 잘 입력해서 정산대시보드에 진입했지만 정산현황이 존재하지 않을 때
       res.send("103");
       break;
-    case _authError: //autherror 존재할때
+    case _authError: //인증절차에서 사용자가 잘못된 인증번호를 입력했을때
       res.send("104");
       break;
-    default:
+    default: //위의 경우가 아니라면 정산금을 가지고 온다.
       await modules.getSettlement(req, _calculateExist, res);
       console.log("ok");
       break;

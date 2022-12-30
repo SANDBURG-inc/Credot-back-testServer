@@ -136,11 +136,12 @@ const getSettlement = async (req, calculateExist, res) => {
       let stDate = new Date();
       let endDate = new Date(data[1]);
       let btDay = await parseInt(
+        //쿠팡대시보드의 정산예정일과 현재시간의 차이 계산
         (endDate.getTime() - stDate.getTime()) / (1000 * 60 * 60 * 24)
       );
-      prevContract = await getContract(req);
-      let price = parseFloat(data[0].replace(/,/g, "")) - prevContract;
-      let fee = await parseInt(parseFloat(price) * (0.004 * btDay));
+      prevContract = await getContract(req); //이전 정산금 합계를 getContract함수를 이용해서 db에서 가지고 온다.
+      let price = parseFloat(data[0].replace(/,/g, "")) - prevContract; // 현재시간에 쿠팡 대시보드에서 가지고 온 예정정산금에서 이전 정산금 합계를 빼준다.
+      let fee = await parseInt(parseFloat(price) * (0.004 * btDay)); //일 0.004로 수수료 계산
       res.json({
         price: price,
         deadline: data[1],

@@ -10,24 +10,25 @@ const corsOptions = require("./option/corsOption");
 const sessionOption = require("./option/sessionOption");
 const url = require("url");
 
-const commerceRouter = require("./routes/commerce/commerceController");
-const dbRouter = require("./routes/database/databaseController");
-const getCorpState = require("./getCorpState/corpAuthentication");
-const mariadb = require("./routes/database/dbConnect");
+const commerceRouter = require("./routes/commerce/commerceController"); //커머스 크롤러 api
+const dbRouter = require("./routes/database/databaseController"); //스트라피 사용 전 회원database 조작 api(일단 남겨놓음.)
+const getCorpState = require("./getCorpState/corpAuthentication"); //사업자번호 인증 api
+const mariadb = require("./routes/database/dbConnect"); //db연결 정보
 
 const app = express();
 mariadb.connect(function (err) {
+  //mariadb 연결
   if (err) {
     throw err;
   }
   console.log("connection");
 });
 
-app.set("views", "./views");
+app.set("views", "./views"); //view 엔진 템플릿.. express generator에의해 생성된 것이므로 무시하세요
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 9000);
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); //Corsoption파일을 미들웨어로 사용. 앞으로 서버의 app.js로 들어오는 모든 요청 객체들은 이 미들웨어를 거침
 app.use(session(sessionOption));
 app.use(cookieParser());
 app.use(logger("dev"));
@@ -47,13 +48,10 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
 app.get("/corpAuth", (req, res) => {
-  let queryData = url.parse(req.url, true).query;
-  getCorpState(res, queryData.code);
+  //사업자번호 인증 라우터
+  let queryData = url.parse(req.url, true).query; //리액트에서 요청시 queryString 추출 후 queryData에 할당
+  getCorpState(res, queryData.code); // testServer/getCorpState안에 있는 getCorpState함수 호출(리액트에서 주는 code=사업자번호를 queryData에서 추출해서 인자로 보냄)
 });
 
 let server = app.listen(app.get("port"), () => {
